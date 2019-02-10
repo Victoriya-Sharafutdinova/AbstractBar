@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("AbstractBar")]
+[assembly: AssemblyTitle("AbstractBarModel")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AbstractBar")]
+[assembly: AssemblyProduct("AbstractBarModel")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
-[assembly: Guid("2aa887bd-e3dd-44dd-8fcc-4f21ad2352e5")]
+[assembly: Guid("37113c4e-4a97-441d-a75c-4f1bc193751d")]
 
 // Сведения о версии сборки состоят из следующих четырех значений:
 //
