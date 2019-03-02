@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1B704247-1D26-4F6F-B43C-7CB48C5B2612}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>AbstractGarmentFactoryView</RootNamespace>
+    <AssemblyName>AbstractGarmentFactoryView</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions, Version=4.0.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.9.4\lib\net46\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.9.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.9.4\lib\net46\Unity.Container.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FormCustomer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCustomer.Designer.cs">
+      <DependentUpon>FormCustomer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormCustomers.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCustomers.Designer.cs">
+      <DependentUpon>FormCustomers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormFabric.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormFabric.Designer.cs">
+      <DependentUpon>FormFabric.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormFabrics.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormFabrics.Designer.cs">
+      <DependentUpon>FormFabrics.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormFabricStocking.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormFabricStocking.Designer.cs">
+      <DependentUpon>FormFabricStocking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormCreateIndent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCreateIndent.Designer.cs">
+      <DependentUpon>FormCreateIndent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMain.Designer.cs">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormStocking.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormStocking.Designer.cs">
+      <DependentUpon>FormStocking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormStockings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormStockings.Designer.cs">
+      <DependentUpon>FormStockings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FormCustomer.resx">
+      <DependentUpon>FormCustomer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCustomers.resx">
+      <DependentUpon>FormCustomers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormFabric.resx">
+      <DependentUpon>FormFabric.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormFabrics.resx">
+      <DependentUpon>FormFabrics.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormFabricStocking.resx">
+      <DependentUpon>FormFabricStocking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCreateIndent.resx">
+      <DependentUpon>FormCreateIndent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMain.resx">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormStocking.resx">
+      <DependentUpon>FormStocking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormStockings.resx">
+      <DependentUpon>FormStockings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AbstractGarmentFactoryModel\AbstractGarmentFactoryModel.csproj">
+      <Project>{831772cd-be31-425e-9d17-0afcd9ef121a}</Project>
+      <Name>AbstractGarmentFactoryModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AbstractGarmentFactoryServiceDAL\AbstractGarmentFactoryServiceDAL.csproj">
+      <Project>{d313478b-d385-4243-b9c5-387eb73ca6f6}</Project>
+      <Name>AbstractGarmentFactoryServiceDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AbstractGarmentFactoryServiceImplement\AbstractGarmentFactoryServiceImplement.csproj">
+      <Project>{1c771b32-3715-4769-88b8-5a76025aa4e8}</Project>
+      <Name>AbstractGarmentFactoryServiceImplement</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
