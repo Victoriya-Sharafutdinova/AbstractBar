@@ -32,6 +32,8 @@ namespace AbstractGarmentFactoryView
             currentContainer.RegisterType<IStockingService, StockingServiceList>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<IFabricService, FabricServiceList>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<IMainService, MainServiceList>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IStorageService, StorageServiceList>(new HierarchicalLifetimeManager());
+
             return currentContainer;
         }
     }

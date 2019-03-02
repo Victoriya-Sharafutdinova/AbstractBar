@@ -18,7 +18,7 @@ namespace AbstractGarmentFactoryModel
 
         public decimal Total { get; set; }
 
-        public IndentStatus Condition { get; set; }
+        public IndentCondition Condition { get; set; }
 
         public DateTime DateCreate { get; set; }
 

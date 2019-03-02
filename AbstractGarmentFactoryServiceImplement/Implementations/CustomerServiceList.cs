@@ -21,82 +21,69 @@ namespace AbstractGarmentFactoryServiceImplement.Implementations
 
         public List<CustomerViewModel> GetList()
         {
-            List<CustomerViewModel> result = new List<CustomerViewModel>();
-            for (int i = 0; i < source.Customer.Count; ++i)
+            List<CustomerViewModel> result = source.Customer.Select(rec => new CustomerViewModel
             {
-                result.Add(new CustomerViewModel
-                {
-                    Id = source.Customer[i].Id,
-                    CustomerFIO = source.Customer[i].CustomerFIO
-                });
-            }
-
+                Id = rec.Id,
+                CustomerFIO = rec.CustomerFIO
+            })
+            .ToList();
             return result;
         }
 
         public CustomerViewModel GetElement(int id)
         {
-            for (int i = 0; i < source.Customer.Count; ++i)
+            Customer element = source.Customer.FirstOrDefault(rec => rec.Id == id);
+            if (element != null)
             {
-                if (source.Customer[i].Id == id)
+                return new CustomerViewModel
                 {
-                    return new CustomerViewModel
-                    {
-                        Id = source.Customer[i].Id,
-                        CustomerFIO = source.Customer[i].CustomerFIO
-                    };
-                }
+                    Id = element.Id,
+                    CustomerFIO = element.CustomerFIO
+                };
             }
             throw new Exception("Элемент не найден");
         }
 
         public void AddElement(CustomerBindingModel model)
         {
-            int maxId = 0;
-            for (int i = 0; i < source.Customer.Count; ++i)
+            Customer element = source.Customer.FirstOrDefault(rec => rec.CustomerFIO == model.CustomerFIO);
+            if (element != null)
             {
-                if (source.Customer[i].Id > maxId)
-                {
-                    maxId = source.Customer[i].Id;
-                }
-                if (source.Customer[i].CustomerFIO == model.CustomerFIO)
-                {
-                    throw new Exception("Уже есть клиент с таким ФИО");
-                }
+                throw new Exception("Уже есть клиент с таким ФИО");
             }
-            source.Customer.Add(new Customer { Id = maxId + 1, CustomerFIO = model.CustomerFIO });
+            int maxId = source.Customer.Count > 0 ? source.Customer.Max(rec => rec.Id) : 0;
+            source.Customer.Add(new Customer
+            {
+                Id = maxId + 1,
+                CustomerFIO = model.CustomerFIO
+            });
         }
 
         public void UpdElement(CustomerBindingModel model)
         {
-            int index = -1;
-            for (int i = 0; i < source.Customer.Count; ++i)
+            Customer element = source.Customer.FirstOrDefault(rec => rec.CustomerFIO == model.CustomerFIO && rec.Id != model.Id);
+            if (element != null)
             {
-                if (source.Customer[i].Id == model.Id)
-                {
-                    index = i;
-                }
-                if (source.Customer[i].CustomerFIO == model.CustomerFIO && source.Customer[i].Id != model.Id)
-                {
-                    throw new Exception("Уже есть клиент с таким ФИО");
-                }
+                throw new Exception("Уже есть клиент с таким ФИО");
             }
-            if (index == -1)
+            element = source.Customer.FirstOrDefault(rec => rec.Id == model.Id);
+            if (element == null)
             {
                 throw new Exception("Элемент не найден");
             }
-            source.Customer[index].CustomerFIO = model.CustomerFIO;
+            element.CustomerFIO = model.CustomerFIO;
         }
         public void DelElement(int id)
         {
-            for (int i = 0; i < source.Customer.Count; ++i)
+            Customer element = source.Customer.FirstOrDefault(rec => rec.Id == id);
+            if (element != null)
             {
-                if (source.Customer[i].Id == id)
-                {
-                    source.Customer.RemoveAt(i); return;
-                }
+                source.Customer.Remove(element);
             }
-            throw new Exception("Элемент не найден");
+            else
+            {
+                throw new Exception("Элемент не найден");
+            }
         }
     }
 }
