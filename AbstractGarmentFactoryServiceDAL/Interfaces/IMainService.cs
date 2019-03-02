@@ -19,5 +19,7 @@ namespace AbstractGarmentFactoryServiceDAL.Interfaces
         void FinishIndent(IndentBindingModel model);
 
         void PayIndent(IndentBindingModel model);
+
+        void PutStockingOnStorage(StorageStockingBindingModel model);
     }
 }
