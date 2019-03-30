@@ -158,12 +158,6 @@
     <Compile Include="FormStorages.Designer.cs">
       <DependentUpon>FormStorages.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormStoragesLoad.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormStoragesLoad.Designer.cs">
-      <DependentUpon>FormStoragesLoad.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
@@ -196,9 +190,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormStockings.resx">
       <DependentUpon>FormStockings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormStoragesLoad.resx">
-      <DependentUpon>FormStoragesLoad.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

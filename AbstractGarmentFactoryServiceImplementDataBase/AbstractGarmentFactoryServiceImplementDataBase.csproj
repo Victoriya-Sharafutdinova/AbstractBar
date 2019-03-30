@@ -64,7 +64,6 @@
     <Compile Include="Implementations\CustomerServiceDB.cs" />
     <Compile Include="Implementations\FabricServiceDB.cs" />
     <Compile Include="Implementations\MainServiceDB.cs" />
-    <Compile Include="Implementations\ReportServiceDB.cs" />
     <Compile Include="Implementations\StockingServiceDB.cs" />
     <Compile Include="Implementations\StorageServiceDB.cs" />
     <Compile Include="Migrations\201903160819058_FirstMigration.cs" />
