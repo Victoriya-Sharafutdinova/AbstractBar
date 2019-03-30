@@ -15,5 +15,11 @@ namespace AbstractGarmentFactoryModel
         public int StockingId { get; set; }
 
         public int Amount { get; set; }
+
+        public virtual Fabric Fabrics { get; set; }
+
+        public virtual Stocking Stocking { get; set; }
+
+
     }
 }
