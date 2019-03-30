@@ -7,6 +7,7 @@ using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Interop.Word;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.SqlServer;
 using System.IO;
 using System.Linq;
@@ -76,7 +77,10 @@ namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
                 for (int i = 0; i < products.Count; ++i)
                 {
                     table.Cell(i + 1, 1).Range.Text = products[i].FabricName;
-                    table.Cell(i + 1, 2).Range.Text = products[i].Value.ToString(); }                 //задаем границы таблицы                 table.Borders.InsideLineStyle = WdLineStyle.wdLineStyleInset;                 table.Borders.OutsideLineStyle = WdLineStyle.wdLineStyleSingle; 
+                    table.Cell(i + 1, 2).Range.Text = products[i].Value.ToString(); }
+                //задаем границы таблицы         
+                table.Borders.InsideLineStyle = WdLineStyle.wdLineStyleInset;
+                table.Borders.OutsideLineStyle = WdLineStyle.wdLineStyleSingle; 
 
                 paragraph = document.Paragraphs.Add(missing);
                 range = paragraph.Range;
@@ -242,8 +246,8 @@ namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
         public List<CustomerIndentsModel> GetCustomerIndents(ReportBindingModel model)
         {
             return context.Indents
-                .Include(rec => rec.Customers)
-                .Include(rec => rec.Fabrics)
+                .Include(rec => rec.Customer)
+                .Include(rec => rec.Fabric)
                 .Where(rec => rec.DateCreate >= model.DateFrom && 
                 rec.DateCreate <= model.DateTo).Select(rec => new CustomerIndentsModel
                 {
