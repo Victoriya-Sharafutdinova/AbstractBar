@@ -44,6 +44,7 @@
             this.buttonSaveExcel.TabIndex = 0;
             this.buttonSaveExcel.Text = "Сохранить в Excel";
             this.buttonSaveExcel.UseVisualStyleBackColor = true;
+            this.buttonSaveExcel.Click += new System.EventHandler(this.buttonSaveToExcel_Click);
             // 
             // dataGridView
             // 
@@ -91,6 +92,7 @@
             this.Controls.Add(this.buttonSaveExcel);
             this.Name = "FormStoragesLoad";
             this.Text = "FormStoragesLoad";
+            this.Load += new System.EventHandler(this.FormStoragesLoad_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
 

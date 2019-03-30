@@ -15,7 +15,8 @@ namespace AbstractGarmentFactoryView
 {
     public partial class FormStoragesLoad : Form
     {
-        [Dependency] public new IUnityContainer Container { get; set; }
+        [Dependency]
+        public new IUnityContainer Container { get; set; }
 
         private readonly IReportService service;
 
@@ -25,7 +26,7 @@ namespace AbstractGarmentFactoryView
             this.service = service;
         }
 
-        private void FormStocksLoad_Load(object sender, EventArgs e)
+        private void FormStoragesLoad_Load(object sender, EventArgs e)
         {
             try
             {
