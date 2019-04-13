@@ -10,25 +10,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Unity;
 
 namespace AbstractGarmentFactoryView
 {
     public partial class FormStocking : Form
     {
 
-        [Dependency] public new IUnityContainer Container { get; set; }
-
         public int Id { set { id = value; } }
-
-        private readonly IStockingService service;
 
         private int? id;
 
-        public FormStocking(IStockingService service)
+        public FormStocking()
         {
             InitializeComponent();
-            this.service = service;
         }
 
         private void FormStocking_Load(object sender, EventArgs e)
@@ -37,10 +31,10 @@ namespace AbstractGarmentFactoryView
             {
                 try
                 {
-                    StockingViewModel view = service.GetElement(id.Value);
-                    if (view != null)
+                    StockingViewModel stocking = APICustomer.GetRequest<StockingViewModel>("api/Stocking/Get/" + id.Value);
+                    if (stocking != null)
                     {
-                        textBoxName.Text = view.StockingName;
+                        textBoxName.Text = stocking.StockingName;
                     }
                 }
                 catch (Exception ex)
@@ -61,7 +55,7 @@ namespace AbstractGarmentFactoryView
             {
                 if (id.HasValue)
                 {
-                    service.UpdElement(new StockingBindingModel
+                    APICustomer.PostRequest<StockingBindingModel, bool>("api/Stocking/UpdElement", new StockingBindingModel
                     {
                         Id = id.Value,
                         StockingName = textBoxName.Text
@@ -69,7 +63,7 @@ namespace AbstractGarmentFactoryView
                 }
                 else
                 {
-                    service.AddElement(new StockingBindingModel
+                    APICustomer.PostRequest<StockingBindingModel, bool>("api/Stocking/UpdElement", new StockingBindingModel
                     {
                         StockingName = textBoxName.Text
                     });

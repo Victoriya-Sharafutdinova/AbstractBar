@@ -103,7 +103,7 @@
             this.Controls.Add(this.label1);
             this.Name = "FormFabricStocking";
             this.Text = "Заготовки изделия";
-            this.Load += new System.EventHandler(this.FormProductComponent_Load);
+            this.Load += new System.EventHandler(this.FormFabricStocking_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

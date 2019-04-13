@@ -10,33 +10,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Unity;
 
 namespace AbstractGarmentFactoryView
 {
     public partial class FormStorage : Form
     {
-        [Dependency] public new IUnityContainer Container { get; set; }
-
-        public int Id { set { id = value; } }
-
-        private readonly IStorageService service;
+        public int Id {
+            set
+            {
+                id = value;
+            }
+        }
 
         private int? id;
 
-        public FormStorage(IStorageService service)
+        public FormStorage()
         {
             InitializeComponent();
-            this.service = service;
         }
 
-        private void FormStock_Load(object sender, EventArgs e)
+        private void FormStorage_Load(object sender, EventArgs e)
         {
             if (id.HasValue)
             {
                 try
                 {
-                    StorageViewModel view = service.GetElement(id.Value);
+                    StorageViewModel view = APICustomer.GetRequest<StorageViewModel>("api/Storage/GetList");
                     if (view != null)
                     {
                         textBoxName.Text = view.StorageName;
@@ -65,7 +64,7 @@ namespace AbstractGarmentFactoryView
             {
                 if (id.HasValue)
                 {
-                    service.UpdElement(new StorageBindingModel
+                    APICustomer.PostRequest<StorageBindingModel, bool>("api/Storage/UpdElement", new StorageBindingModel
                     {
                         Id = id.Value,
                         StorageName = textBoxName.Text
@@ -73,7 +72,7 @@ namespace AbstractGarmentFactoryView
                 }
                 else
                 {
-                    service.AddElement(new StorageBindingModel
+                    APICustomer.PostRequest<StorageBindingModel, bool>("api/Storage/UpdElement", new StorageBindingModel
                     {
                         StorageName = textBoxName.Text
                     });

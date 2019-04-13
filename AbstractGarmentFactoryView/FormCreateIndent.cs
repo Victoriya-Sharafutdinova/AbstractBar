@@ -10,44 +10,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Unity;
 
 namespace AbstractGarmentFactoryView
 {
     public partial class FormCreateIndent : Form
     {
-        [Dependency] public new IUnityContainer Container { get; set; }
 
-        private readonly ICustomerService serviceC;
-
-        private readonly IFabricService serviceP;
-
-        private readonly IMainService serviceM;
-
-        public FormCreateIndent(ICustomerService serviceC, IFabricService serviceP, IMainService serviceM)
+        public FormCreateIndent()
         {
             InitializeComponent();
-            this.serviceC = serviceC;
-            this.serviceP = serviceP;
-            this.serviceM = serviceM;
         }
         private void FormCreateIndent_Load(object sender, EventArgs e)
         {
             try
             {
-                List<CustomerViewModel> listC = serviceC.GetList(); if (listC != null)
+                List<CustomerViewModel> listC = APICustomer.GetRequest<List<CustomerViewModel>>("api/Customer/GetList");
+                if (listC != null)
                 {
                     comboBoxCustomer.DisplayMember = "CustomerFIO";
                     comboBoxCustomer.ValueMember = "Id";
                     comboBoxCustomer.DataSource = listC;
                     comboBoxCustomer.SelectedItem = null;
                 }
-                List<FabricViewModel> listP = serviceP.GetList();
-                if (listP != null)
+                List<FabricViewModel> listF = APICustomer.GetRequest<List<FabricViewModel>>("api/Fabric/GetList");
+                if (listF != null)
                 {
                     comboBoxFabric.DisplayMember = "FabricName";
                     comboBoxFabric.ValueMember = "Id";
-                    comboBoxFabric.DataSource = listP;
+                    comboBoxFabric.DataSource = listF;
                     comboBoxFabric.SelectedItem = null;
                 }
             }
@@ -63,8 +53,9 @@ namespace AbstractGarmentFactoryView
             {
                 try
                 {
+                    List<FabricViewModel> list = APICustomer.GetRequest<List<FabricViewModel>>("api/Fabric/GetList");
                     int id = Convert.ToInt32(comboBoxFabric.SelectedValue);
-                    FabricViewModel product = serviceP.GetElement(id);
+                    FabricViewModel product = list.ElementAt(id);
                     int count = Convert.ToInt32(textBoxAmount.Text);
                     textBoxTotal.Text = (count * product.Value).ToString();
                 }
@@ -104,7 +95,7 @@ namespace AbstractGarmentFactoryView
             }
             try
             {
-                serviceM.CreateIndent(new IndentBindingModel
+                APICustomer.PostRequest<IndentBindingModel, bool>("api/Indent/UpdElement", new IndentBindingModel
                 {
                     CustomerId = Convert.ToInt32(comboBoxCustomer.SelectedValue),
                     FabricId = Convert.ToInt32(comboBoxFabric.SelectedValue),

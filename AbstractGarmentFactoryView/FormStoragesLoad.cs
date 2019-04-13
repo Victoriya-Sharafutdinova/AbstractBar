@@ -1,5 +1,6 @@
 ﻿using AbstractGarmentFactoryServiceDAL.BindingModel;
 using AbstractGarmentFactoryServiceDAL.Interfaces;
+using AbstractGarmentFactoryServiceDAL.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,32 +10,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Unity;
+
 
 namespace AbstractGarmentFactoryView
 {
     public partial class FormStoragesLoad : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
 
-        private readonly IReportService service;
-
-        public FormStoragesLoad(IReportService service)
+        public FormStoragesLoad()
         {
             InitializeComponent();
-            this.service = service;
         }
 
         private void FormStoragesLoad_Load(object sender, EventArgs e)
         {
             try
             {
-                var dict = service.GetStoragesLoad();
-                if (dict != null)
+                List<StorageLoadViewModel> list = APICustomer.GetRequest<List<StorageLoadViewModel>>("api/Storage/GetList");
+                if (list != null)
                 {
                     dataGridView.Rows.Clear();
-                    foreach (var elem in dict)
+                    foreach (var elem in list)
                     {
                         dataGridView.Rows.Add(new object[] 
                         {
@@ -68,7 +64,7 @@ namespace AbstractGarmentFactoryView
             {
                 try
                 {
-                    service.SaveStoragesLoad(new ReportBindingModel
+                    APICustomer.PostRequest<ReportBindingModel, bool>("api/Report/SaveClientOrders", new ReportBindingModel
                     {
                         FileName = sfd.FileName
                     });

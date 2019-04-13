@@ -1,5 +1,6 @@
 ﻿using AbstractGarmentFactoryServiceDAL.BindingModel;
 using AbstractGarmentFactoryServiceDAL.Interfaces;
+using AbstractGarmentFactoryServiceDAL.ViewModel;
 using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
@@ -10,28 +11,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Unity;
+
 
 namespace AbstractGarmentFactoryView
 {
     public partial class FormCustomerIndents : Form
-    {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
-
-        private readonly IReportService service;
-
-        public FormCustomerIndents(IReportService service)
+    { 
+        public FormCustomerIndents()
         {
             InitializeComponent();
-            this.service = service;
         }
-
-        //private void FormCustomerIndents_Load(object sender, EventArgs e)
-        //{
-
-        //    this.reportViewer.RefreshReport();
-        //}
 
         private void buttonCreate_Click(object sender, EventArgs e)
         {
@@ -47,12 +36,12 @@ namespace AbstractGarmentFactoryView
                     " по " + dateTimePickerTo.Value.ToShortDateString());
                 reportViewer.LocalReport.SetParameters(parameter);
 
-                var dataSource = service.GetCustomerIndents(new ReportBindingModel
+                List<CustomerIndentsModel> response = APICustomer.PostRequest<ReportBindingModel, List<CustomerIndentsModel>>("api/Report/GetCustomerIndents", new ReportBindingModel
                 {
                     DateFrom = dateTimePickerFrom.Value,
                     DateTo = dateTimePickerTo.Value
                 });
-                ReportDataSource source = new ReportDataSource("DataSetIndents", dataSource);
+                ReportDataSource source = new ReportDataSource("DataSetIndents", response);
                 reportViewer.LocalReport.DataSources.Add(source);
 
                 reportViewer.RefreshReport();
@@ -79,7 +68,7 @@ namespace AbstractGarmentFactoryView
             {
                 try
                 {
-                    service.SaveCustomerIndents(new ReportBindingModel
+                    APICustomer.PostRequest<ReportBindingModel, bool>("api/Report/SaveCustomerIndents", new ReportBindingModel
                     {
                         FileName = sfd.FileName,
                         DateFrom = dateTimePickerFrom.Value,

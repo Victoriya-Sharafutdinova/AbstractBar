@@ -10,57 +10,39 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Unity;
+
 
 namespace AbstractGarmentFactoryView
 {
     public partial class FormFabric : Form
     {
-        [Dependency] public new IUnityContainer Container { get; set; }
-
-        public int Id { set { id = value; } }
-
-        private readonly IFabricService service;
+        public int Id
+        {
+            set
+            {
+                id = value;
+            }
+        }
 
         private int? id;
 
         private List<FabricStockingViewModel> cocktailIngredient;
 
-        public FormFabric(IFabricService service)
+        public FormFabric()
         {
             InitializeComponent();
-            this.service = service;
         }
 
-        private void FormProduct_Load(object sender, EventArgs e)
+        private void FormFabric_Load(object sender, EventArgs e)
         {
-            if (id.HasValue)
-            { try
-                {
-                    FabricViewModel view = service.GetElement(id.Value);
-                    if (view != null)
-                    {
-                        textBoxName.Text = view.FabricName;
-                        textBoxPrice.Text = view.Value.ToString();
-                        cocktailIngredient = view.FabricStocking;
-                        LoadData();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else
-            {
-                cocktailIngredient = new List<FabricStockingViewModel>();
-            }
+            LoadData();
         }
 
         private void LoadData()
         {
             try
             {
+                List<FabricViewModel> list = APICustomer.GetRequest<List<FabricViewModel>>("api/Fabric/GetList");
                 if (cocktailIngredient != null)
                 {
                     dataGridView1.DataSource = null;
@@ -79,17 +61,9 @@ namespace AbstractGarmentFactoryView
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormFabricStocking>();
+            var form = new FormFabricStocking();
             if (form.ShowDialog() == DialogResult.OK)
             {
-                if (form.Model != null)
-                {
-                    if (id.HasValue)
-                    {
-                        form.Model.FabricId = id.Value;
-                    }
-                    cocktailIngredient.Add(form.Model);
-                }
                 LoadData();
             }
         }
@@ -98,11 +72,12 @@ namespace AbstractGarmentFactoryView
         {
             if (dataGridView1.SelectedRows.Count == 1)
             {
-                var form = Container.Resolve<FormFabricStocking>();
-                form.Model = cocktailIngredient[dataGridView1.SelectedRows[0].Cells[0].RowIndex];
+                var form =new FormFabric
+                {
+                    Id = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells[0].Value)
+                };
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    cocktailIngredient[dataGridView1.SelectedRows[0].Cells[0].RowIndex] = form.Model;
                     LoadData();
                 }
             }
@@ -114,9 +89,13 @@ namespace AbstractGarmentFactoryView
             {
                 if (MessageBox.Show("Удалить запись", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
+                    int id = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells[0].Value);
                     try
                     {
-                        cocktailIngredient.RemoveAt(dataGridView1.SelectedRows[0].Cells[0].RowIndex);
+                        APICustomer.PostRequest<FabricBindingModel, bool>("api/Fabric/DelElement", new FabricBindingModel
+                        {
+                            Id = id
+                        });
                     }
                     catch (Exception ex)
                     {
@@ -164,7 +143,7 @@ namespace AbstractGarmentFactoryView
                 }
                 if (id.HasValue)
                 {
-                    service.UpdElement(new FabricBindingModel
+                    APICustomer.PostRequest<FabricBindingModel, bool>("api/Fabric/UpdElement", new FabricBindingModel
                     {
                         Id = id.Value,
                         FabricName = textBoxName.Text,
@@ -174,7 +153,7 @@ namespace AbstractGarmentFactoryView
                 }
                 else
                 {
-                    service.AddElement(new FabricBindingModel
+                    APICustomer.PostRequest<FabricBindingModel, bool>("api/Fabric/UpdElement", new FabricBindingModel
                     {
                         FabricName = textBoxName.Text,
                         Value = Convert.ToInt32(textBoxPrice.Text),
