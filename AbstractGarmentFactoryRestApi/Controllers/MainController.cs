@@ -30,31 +30,31 @@ namespace AbstractGarmentFactoryRestApi.Controllers
         }
 
         [HttpPost]
-        public void CreateOrder(IndentBindingModel model)
+        public void CreateIndent(IndentBindingModel model)
         {
             _service.CreateIndent(model);
         }
 
         [HttpPost]
-        public void TakeOrderInWork(IndentBindingModel model)
+        public void TakeIndentInWork(IndentBindingModel model)
         {
             _service.TakeIndentInWork(model);
         }
 
         [HttpPost]
-        public void FinishOrder(IndentBindingModel model)
+        public void FinishIndent(IndentBindingModel model)
         {
             _service.FinishIndent(model);
         }
 
         [HttpPost]
-        public void PayOrder(IndentBindingModel model)
+        public void PayIndent(IndentBindingModel model)
         {
             _service.PayIndent(model);
         }
 
         [HttpPost]
-        public void PutComponentOnStock(StorageStockingBindingModel model)
+        public void PutStockingOnStorage(StorageStockingBindingModel model)
         {
             _service.PutStockingOnStorage(model);
         }

@@ -26,7 +26,7 @@ namespace AbstractGarmentFactoryView
 
         private int? id;
 
-        private List<FabricStockingViewModel> cocktailIngredient;
+        private List<FabricStockingViewModel> fabricStockings;
 
         public FormFabric()
         {
@@ -35,18 +35,38 @@ namespace AbstractGarmentFactoryView
 
         private void FormFabric_Load(object sender, EventArgs e)
         {
-            LoadData();
+            if (id.HasValue)
+            {
+                try
+                {
+                    FabricViewModel view = APICustomer.GetRequest<FabricViewModel>("api/Fabric/Get/" + id.Value); 
+                    if (view != null)
+                    {
+                        textBoxName.Text = view.FabricName;
+                        textBoxPrice.Text = view.Value.ToString();
+                        fabricStockings = view.FabricStocking;
+                        LoadData();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else  
+            {
+                fabricStockings = new List<FabricStockingViewModel>();
+            }
         }
 
         private void LoadData()
         {
             try
             {
-                List<FabricViewModel> list = APICustomer.GetRequest<List<FabricViewModel>>("api/Fabric/GetList");
-                if (cocktailIngredient != null)
+                if (fabricStockings != null)
                 {
                     dataGridView1.DataSource = null;
-                    dataGridView1.DataSource = cocktailIngredient;
+                    dataGridView1.DataSource = fabricStockings;
                     dataGridView1.Columns[0].Visible = false;
                     dataGridView1.Columns[1].Visible = false;
                     dataGridView1.Columns[2].Visible = false;
@@ -64,6 +84,14 @@ namespace AbstractGarmentFactoryView
             var form = new FormFabricStocking();
             if (form.ShowDialog() == DialogResult.OK)
             {
+                if (form.Model != null)
+                {
+                    if (id.HasValue)
+                    {
+                        form.Model.FabricId = id.Value;
+                    }
+                    fabricStockings.Add(form.Model);
+                }
                 LoadData();
             }
         }
@@ -72,12 +100,11 @@ namespace AbstractGarmentFactoryView
         {
             if (dataGridView1.SelectedRows.Count == 1)
             {
-                var form =new FormFabric
-                {
-                    Id = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells[0].Value)
-                };
+                var form = new FormFabricStocking();
+                form.Model = fabricStockings[dataGridView1.SelectedRows[0].Cells[0].RowIndex];
                 if (form.ShowDialog() == DialogResult.OK)
                 {
+                    fabricStockings[dataGridView1.SelectedRows[0].Cells[0].RowIndex] = form.Model;
                     LoadData();
                 }
             }
@@ -89,13 +116,9 @@ namespace AbstractGarmentFactoryView
             {
                 if (MessageBox.Show("Удалить запись", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    int id = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells[0].Value);
                     try
                     {
-                        APICustomer.PostRequest<FabricBindingModel, bool>("api/Fabric/DelElement", new FabricBindingModel
-                        {
-                            Id = id
-                        });
+                        fabricStockings.RemoveAt(dataGridView1.SelectedRows[0].Cells[0].RowIndex);
                     }
                     catch (Exception ex)
                     {
@@ -123,22 +146,22 @@ namespace AbstractGarmentFactoryView
                 MessageBox.Show("Заполните цену", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (cocktailIngredient == null || cocktailIngredient.Count == 0)
+            if (fabricStockings == null || fabricStockings.Count == 0)
             {
                 MessageBox.Show("Заполните компоненты", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             try
             {
-                List<FabricStockingBindingModel> cocktailIngredientBM = new List<FabricStockingBindingModel>();
-                for (int i = 0; i < cocktailIngredient.Count; ++i)
+                List<FabricStockingBindingModel> fabricStockingsBM = new List<FabricStockingBindingModel>();
+                for (int i = 0; i < fabricStockings.Count; ++i)
                 {
-                    cocktailIngredientBM.Add(new FabricStockingBindingModel
+                    fabricStockingsBM.Add(new FabricStockingBindingModel
                     {
-                        Id = cocktailIngredient[i].Id,
-                        FabricId = cocktailIngredient[i].FabricId,
-                        StockingId = cocktailIngredient[i].StockingId,
-                        Amount = cocktailIngredient[i].Amount
+                        Id = fabricStockings[i].Id,
+                        FabricId = fabricStockings[i].FabricId,
+                        StockingId = fabricStockings[i].StockingId,
+                        Amount = fabricStockings[i].Amount
                     });
                 }
                 if (id.HasValue)
@@ -148,16 +171,16 @@ namespace AbstractGarmentFactoryView
                         Id = id.Value,
                         FabricName = textBoxName.Text,
                         Value = Convert.ToInt32(textBoxPrice.Text),
-                        FabricStocking = cocktailIngredientBM
+                        FabricStocking = fabricStockingsBM
                     });
                 }
                 else
                 {
-                    APICustomer.PostRequest<FabricBindingModel, bool>("api/Fabric/UpdElement", new FabricBindingModel
+                    APICustomer.PostRequest<FabricBindingModel, bool>("api/Fabric/AddElement", new FabricBindingModel
                     {
                         FabricName = textBoxName.Text,
                         Value = Convert.ToInt32(textBoxPrice.Text),
-                        FabricStocking = cocktailIngredientBM
+                        FabricStocking = fabricStockingsBM
                     });
                 }
                 MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);

@@ -60,7 +60,7 @@ namespace AbstractGarmentFactoryView
             }
             try
             {
-                APICustomer.PostRequest<StorageStockingBindingModel, bool>("api/StorageStocking/AddElement", new StorageStockingBindingModel
+                APICustomer.PostRequest<StorageStockingBindingModel, bool>("api/Main/PutStockingOnStorage", new StorageStockingBindingModel
                 {
                     StockingId = Convert.ToInt32(comboBoxStocking.SelectedValue),
                     StorageId = Convert.ToInt32(comboBoxStorage.SelectedValue),

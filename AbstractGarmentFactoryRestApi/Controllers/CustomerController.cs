@@ -18,7 +18,8 @@ namespace AbstractGarmentFactoryRestApi.Controllers
             _service = service;
         }
 
-        [HttpGet] public IHttpActionResult GetList()
+        [HttpGet]
+        public IHttpActionResult GetList()
         {
             var list = _service.GetList();
             if (list == null)
@@ -28,7 +29,8 @@ namespace AbstractGarmentFactoryRestApi.Controllers
             return Ok(list); }
 
 
-        [HttpGet] public IHttpActionResult Get(int id)
+        [HttpGet]
+        public IHttpActionResult Get(int id)
         {
             var element = _service.GetElement(id);
             if (element == null)
@@ -37,17 +39,20 @@ namespace AbstractGarmentFactoryRestApi.Controllers
             } return Ok(element);
         }
 
-        [HttpPost] public void AddElement(CustomerBindingModel model)
+        [HttpPost]
+        public void AddElement(CustomerBindingModel model)
         {
             _service.AddElement(model);
         }
 
-        [HttpPost] public void UpdElement(CustomerBindingModel model)
+        [HttpPost]
+        public void UpdElement(CustomerBindingModel model)
         {
             _service.UpdElement(model);
         }
 
-        [HttpPost] public void DelElement(CustomerBindingModel model)
+        [HttpPost]
+        public void DelElement(CustomerBindingModel model)
         {
             _service.DelElement(model.Id);
         }

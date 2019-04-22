@@ -63,7 +63,7 @@ namespace AbstractGarmentFactoryView
                 }
                 else
                 {
-                    APICustomer.PostRequest<StockingBindingModel, bool>("api/Stocking/UpdElement", new StockingBindingModel
+                    APICustomer.PostRequest<StockingBindingModel, bool>("api/Stocking/AddElement", new StockingBindingModel
                     {
                         StockingName = textBoxName.Text
                     });

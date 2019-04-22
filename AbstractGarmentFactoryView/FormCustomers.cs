@@ -52,7 +52,7 @@ namespace AbstractGarmentFactoryView
                     int id = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells[0].Value);
                     try
                     {
-                        APICustomer.PostRequest<CustomerBindingModel, bool>("api/Client/DelElement", new CustomerBindingModel
+                        APICustomer.PostRequest<CustomerBindingModel, bool>("api/Customer/DelElement", new CustomerBindingModel
                         {
                             Id = id
                         });
@@ -70,10 +70,10 @@ namespace AbstractGarmentFactoryView
         {
             if (dataGridView1.SelectedRows.Count == 1)
             {
-                var form = new FormCustomer
-                {
-                    Id = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells[0].Value)
-                };
+                var form = new FormCustomer();
+
+                form.Id = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells[0].Value);
+                
                 
                 if (form.ShowDialog() == DialogResult.OK)
                 {

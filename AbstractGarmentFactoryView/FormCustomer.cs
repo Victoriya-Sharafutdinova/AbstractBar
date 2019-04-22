@@ -39,7 +39,10 @@ namespace AbstractGarmentFactoryView
                 {
                     CustomerViewModel customer = APICustomer.GetRequest<CustomerViewModel>("api/Customer/Get/" + id.Value);
                     textBoxFIO.Text = customer.CustomerFIO;
-                    
+                    if (customer != null)
+                    {
+                        textBoxFIO.Text = customer.CustomerFIO;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -67,7 +70,7 @@ namespace AbstractGarmentFactoryView
                 }
                 else
                 {
-                    APICustomer.PostRequest<CustomerBindingModel, bool>("api/Customer/UpdElement", new CustomerBindingModel
+                    APICustomer.PostRequest<CustomerBindingModel, bool>("api/Customer/AddElement", new CustomerBindingModel
                     {
                         CustomerFIO = textBoxFIO.Text
                     });

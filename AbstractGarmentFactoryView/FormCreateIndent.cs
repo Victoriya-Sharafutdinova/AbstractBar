@@ -53,11 +53,10 @@ namespace AbstractGarmentFactoryView
             {
                 try
                 {
-                    List<FabricViewModel> list = APICustomer.GetRequest<List<FabricViewModel>>("api/Fabric/GetList");
                     int id = Convert.ToInt32(comboBoxFabric.SelectedValue);
-                    FabricViewModel product = list.ElementAt(id);
+                    FabricViewModel fabric = APICustomer.GetRequest<FabricViewModel>("api/Fabric/Get/" + id);
                     int count = Convert.ToInt32(textBoxAmount.Text);
-                    textBoxTotal.Text = (count * product.Value).ToString();
+                    textBoxTotal.Text = (count * fabric.Value).ToString();
                 }
                 catch (Exception ex)
                 {
@@ -95,12 +94,12 @@ namespace AbstractGarmentFactoryView
             }
             try
             {
-                APICustomer.PostRequest<IndentBindingModel, bool>("api/Indent/UpdElement", new IndentBindingModel
+                APICustomer.PostRequest<IndentBindingModel, bool>("api/Main/CreateIndent", new IndentBindingModel
                 {
                     CustomerId = Convert.ToInt32(comboBoxCustomer.SelectedValue),
                     FabricId = Convert.ToInt32(comboBoxFabric.SelectedValue),
                     Amount = Convert.ToInt32(textBoxAmount.Text),
-                    Total = Convert.ToInt32(textBoxTotal.Text)
+                    Total = Convert.ToDecimal(textBoxTotal.Text)
                 });
                 MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DialogResult = DialogResult.OK;

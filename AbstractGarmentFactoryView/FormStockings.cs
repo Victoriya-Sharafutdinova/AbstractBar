@@ -52,7 +52,7 @@ namespace AbstractGarmentFactoryView
                     int id = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells[0].Value);
                     try
                     {
-                        APICustomer.PostRequest<StockingBindingModel, bool>("api/Client/DelElement", new StockingBindingModel
+                        APICustomer.PostRequest<StockingBindingModel, bool>("api/Stocking/DelElement", new StockingBindingModel
                         {
                             Id = id
                         });

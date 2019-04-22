@@ -26,7 +26,7 @@ namespace AbstractGarmentFactoryView
         {
             try
             {
-                List<StorageLoadViewModel> list = APICustomer.GetRequest<List<StorageLoadViewModel>>("api/Storage/GetList");
+                var list = APICustomer.GetRequest<List<StorageLoadViewModel>>("api/Storage/GetList");
                 if (list != null)
                 {
                     dataGridView.Rows.Clear();
@@ -64,7 +64,7 @@ namespace AbstractGarmentFactoryView
             {
                 try
                 {
-                    APICustomer.PostRequest<ReportBindingModel, bool>("api/Report/SaveClientOrders", new ReportBindingModel
+                    APICustomer.PostRequest<ReportBindingModel, bool>("api/Report/SaveCustomerIndents", new ReportBindingModel
                     {
                         FileName = sfd.FileName
                     });

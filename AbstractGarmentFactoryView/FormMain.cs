@@ -73,7 +73,7 @@ namespace AbstractGarmentFactoryView
             LoadData();
         }
 
-        private void buttonTakeOrderInWork_Click(object sender, EventArgs e)
+        private void buttonTakIndentInWork_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count == 1)
             {
@@ -120,7 +120,7 @@ namespace AbstractGarmentFactoryView
                 int id = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells[0].Value);
                 try
                 {
-                    APICustomer.PostRequest<IndentBindingModel, bool>("api/Main/PauIndent", new IndentBindingModel
+                    APICustomer.PostRequest<IndentBindingModel, bool>("api/Main/PayIndent", new IndentBindingModel
                     {
                         Id = id
                     });
@@ -148,7 +148,7 @@ namespace AbstractGarmentFactoryView
             {
                 try
                 {
-                    APICustomer.PostRequest<ReportBindingModel, bool>("api/Main/SaveFabricPrice", new ReportBindingModel
+                    APICustomer.PostRequest<ReportBindingModel, bool>("api/Report/SaveFabricValue", new ReportBindingModel
                     {
                         FileName = sfd.FileName
                     });

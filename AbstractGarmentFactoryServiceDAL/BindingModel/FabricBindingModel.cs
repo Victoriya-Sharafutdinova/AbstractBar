@@ -20,6 +20,7 @@ namespace AbstractGarmentFactoryServiceDAL.BindingModel
         [DataMember]
         public decimal Value { get; set; }
 
+        [DataMember]
         public List<FabricStockingBindingModel> FabricStocking { get; set; }
     }
 }

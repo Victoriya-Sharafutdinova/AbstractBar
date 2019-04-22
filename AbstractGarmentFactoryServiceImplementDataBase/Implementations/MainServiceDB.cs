@@ -69,12 +69,12 @@ namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
                     {
                         throw new Exception("Заказ не в статусе \"Принят\"");
                     }
-                    var fabricStockings = context.FabricStockings.Include(rec => rec.Stocking).Where(rec => rec.FabricId == element.FabricId);
+                    var fabricStockings = context.FabricStockings.Include(rec => rec.Stocking).Where(rec => rec.FabricId == element.FabricId).ToList();
                     // списываем      
                     foreach (var fabricStocking in fabricStockings)
                     {
                         int amountOnStorage = fabricStocking.Amount * element.Amount;
-                        var storageStockings = context.StorageStockings.Where(rec => rec.StockingId == fabricStocking.StockingId);
+                        var storageStockings = context.StorageStockings.Where(rec => rec.StockingId == fabricStocking.StockingId).ToList();
                         foreach (var storageStocking in storageStockings)
                         {
                             // компонентов на одном слкаде может не хватать  

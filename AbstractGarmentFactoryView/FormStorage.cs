@@ -35,7 +35,7 @@ namespace AbstractGarmentFactoryView
             {
                 try
                 {
-                    StorageViewModel view = APICustomer.GetRequest<StorageViewModel>("api/Storage/GetList");
+                    StorageViewModel view = APICustomer.GetRequest<StorageViewModel>("api/Storage/Get/" + id.Value);
                     if (view != null)
                     {
                         textBoxName.Text = view.StorageName;
@@ -72,7 +72,7 @@ namespace AbstractGarmentFactoryView
                 }
                 else
                 {
-                    APICustomer.PostRequest<StorageBindingModel, bool>("api/Storage/UpdElement", new StorageBindingModel
+                    APICustomer.PostRequest<StorageBindingModel, bool>("api/Storage/AddElement", new StorageBindingModel
                     {
                         StorageName = textBoxName.Text
                     });

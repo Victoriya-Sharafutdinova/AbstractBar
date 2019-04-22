@@ -167,7 +167,7 @@
             this.buttonTakeOrderInWork.TabIndex = 3;
             this.buttonTakeOrderInWork.Text = "Отдать на выполнение";
             this.buttonTakeOrderInWork.UseVisualStyleBackColor = true;
-            this.buttonTakeOrderInWork.Click += new System.EventHandler(this.buttonTakeOrderInWork_Click);
+            this.buttonTakeOrderInWork.Click += new System.EventHandler(this.buttonTakIndentInWork_Click);
             // 
             // buttonOrderReady
             // 
