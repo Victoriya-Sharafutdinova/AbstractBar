@@ -12,6 +12,8 @@ namespace AbstractGarmentFactoryServiceDAL.Interfaces
     {
         List<IndentViewModel> GetList();
 
+        List<IndentViewModel> GetFreeIndents();
+
         void CreateIndent(IndentBindingModel model);
 
         void TakeIndentInWork(IndentBindingModel model);

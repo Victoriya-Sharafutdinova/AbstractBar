@@ -97,6 +97,10 @@
       <Project>{d313478b-d385-4243-b9c5-387eb73ca6f6}</Project>
       <Name>AbstractGarmentFactoryServiceDAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AbstractGarmentFactoryServiceImplement\AbstractGarmentFactoryServiceImplement.csproj">
+      <Project>{1c771b32-3715-4769-88b8-5a76025aa4e8}</Project>
+      <Name>AbstractGarmentFactoryServiceImplement</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201903160819058_FirstMigration.resx">

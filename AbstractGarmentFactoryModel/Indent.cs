@@ -27,5 +27,7 @@ namespace AbstractGarmentFactoryModel
         public virtual Customer Customer { get; set; }
 
         public virtual Fabric Fabric { get; set; }
+
+        public virtual Implementer Implementer { get; set; }
     }
 }

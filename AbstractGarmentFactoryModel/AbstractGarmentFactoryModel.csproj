@@ -53,6 +53,7 @@
     <Compile Include="Customer.cs" />
     <Compile Include="Fabric.cs" />
     <Compile Include="FabricStocking.cs" />
+    <Compile Include="Implementer.cs" />
     <Compile Include="Stocking.cs" />
     <Compile Include="Indent.cs" />
     <Compile Include="IndentCondition.cs" />
