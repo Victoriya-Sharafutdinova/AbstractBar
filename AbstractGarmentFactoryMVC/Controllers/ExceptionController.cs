@@ -9,9 +9,20 @@ namespace AbstractGarmentFactoryMVC.Controllers
     public class ExceptionController : Controller
     {
         // GET: Exception
-        public ActionResult Index(string messege)
+        public ActionResult Index(int id)
         {
-            ViewData["Message"] = messege;
+            string message = "Ошибок нет. Уйди отсюда.";
+
+            if (id == 0)
+            {
+                message = "Уже есть такой клиент.";
+            }
+            if (id == 1)
+            {
+                message = "Уже есть такой компонент.";
+            }
+
+            ViewBag.Message = message;
             return View();
         }
     }

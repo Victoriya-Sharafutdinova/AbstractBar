@@ -13,12 +13,12 @@ namespace AbstractGarmentFactoryMVC.Controllers
 {
     public class IndentsController : Controller
     {
-        private DataListSingleton inst = DataListSingleton.GetInstance();
+        private DataListSingleton source = DataListSingleton.GetInstance();
 
         // GET: Indents
         public ActionResult Index()
         {
-            return View(inst.Indents.ToList());
+            return View(source.Indents.ToList());
         }
 
         // GET: Indents/Details/5
@@ -28,7 +28,7 @@ namespace AbstractGarmentFactoryMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Indent indent = inst.Indents.Find(x => x.Id == id);
+            Indent indent = source.Indents.Find(x => x.Id == id);
             if (indent == null)
             {
                 return HttpNotFound();
@@ -39,6 +39,8 @@ namespace AbstractGarmentFactoryMVC.Controllers
         // GET: Indents/Create
         public ActionResult Create()
         {
+            ViewBag.Customers = new SelectList(source.Customer, "Id", "CustomerFIO");
+            ViewBag.Fabrics = new SelectList(source.Fabric, "Id", "FabricName");
             return View();
         }
 
@@ -49,14 +51,27 @@ namespace AbstractGarmentFactoryMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,CustomerId,FabricId,Amount,Total,Condition,DateCreate,DateImplement")] Indent indent)
         {
-            if (ModelState.IsValid)
+            int maxId = 0;
+            for (int i = 0; i < source.Indents.Count; ++i)
             {
-                inst.Indents.Add(indent);
-            //    inst.SaveChanges();
-                return RedirectToAction("Index");
+                if (source.Indents[i].Id > maxId)
+                {
+                    maxId = source.Customer[i].Id;
+                }
             }
+            source.Indents.Add(new Indent
+            {
+                Id = maxId + 1,
+                CustomerId = indent.CustomerId,
+                FabricId = indent.FabricId,
+                DateCreate = DateTime.Now,
+                Amount = indent.Amount,
+                Total = indent.Total,
+                Condition = IndentStatus.Принят
+            });
 
-            return View(indent);
+            return RedirectToAction("Index");
+
         }
 
         // GET: Indents/Edit/5
@@ -66,7 +81,7 @@ namespace AbstractGarmentFactoryMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Indent indent = inst.Indents.FirstOrDefault(x => x.Id == id);
+            Indent indent = source.Indents.FirstOrDefault(x => x.Id == id);
             if (indent == null)
             {
                 return HttpNotFound();
@@ -85,9 +100,9 @@ namespace AbstractGarmentFactoryMVC.Controllers
             {
                 //    inst.Entry(indent).State = EntityState.Modified;
                 //     inst.SaveChanges();
-                var indentOld = inst.Indents.FirstOrDefault(x => indent.Id == x.Id);
-                inst.Indents.Remove(indentOld);
-                inst.Indents.Add(indent);
+                var indentOld = source.Indents.FirstOrDefault(x => indent.Id == x.Id);
+                source.Indents.Remove(indentOld);
+                source.Indents.Add(indent);
                 return RedirectToAction("Index");
             }
             return View(indent);
@@ -100,7 +115,7 @@ namespace AbstractGarmentFactoryMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Indent indent = inst.Indents.FirstOrDefault(x => x.Id == id);
+            Indent indent = source.Indents.FirstOrDefault(x => x.Id == id);
             if (indent == null)
             {
                 return HttpNotFound();
@@ -113,8 +128,8 @@ namespace AbstractGarmentFactoryMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Indent indent = inst.Indents.Find(x => x.Id == id);
-            inst.Indents.Remove(indent);
+            Indent indent = source.Indents.Find(x => x.Id == id);
+            source.Indents.Remove(indent);
            // inst.SaveChanges();
             return RedirectToAction("Index");
         }

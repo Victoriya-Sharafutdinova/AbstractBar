@@ -13,12 +13,12 @@ namespace AbstractGarmentFactoryMVC.Controllers
 {
     public class StockingsController : Controller
     {
-        private DataListSingleton inst = DataListSingleton.GetInstance();
+        private DataListSingleton source = DataListSingleton.GetInstance();
 
         // GET: Stockings
         public ActionResult Index()
         {
-            return View(inst.Stocking.ToList());
+            return View(source.Stocking.ToList());
         }
 
         // GET: Stockings/Details/5
@@ -28,7 +28,7 @@ namespace AbstractGarmentFactoryMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Stocking stocking = inst.Stocking.Find(x => x.Id == id);
+            Stocking stocking = source.Stocking.Find(x => x.Id == id);
             if (stocking == null)
             {
                 return HttpNotFound();
@@ -49,14 +49,25 @@ namespace AbstractGarmentFactoryMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,StockingName")] Stocking stocking)
         {
-            if (ModelState.IsValid)
-            {
-                inst.Stocking.Add(stocking);
-          //      inst.SaveChanges();
-                return RedirectToAction("Index");
-            }
 
-            return View(stocking);
+            int maxId = 0;
+            for (int i = 0; i < source.Stocking.Count; ++i)
+            {
+                if (source.Stocking[i].Id > maxId)
+                {
+                    maxId = source.Stocking[i].Id;
+                }
+                if (source.Stocking[i].StockingName == stocking.StockingName)
+                {
+                    return Redirect("/Exception/Index/1");
+                }
+            }
+            source.Stocking.Add(new Stocking
+            {
+                Id = maxId + 1,
+                StockingName = stocking.StockingName
+            });
+            return RedirectToAction("Index");
         }
 
         // GET: Stockings/Edit/5
@@ -66,7 +77,7 @@ namespace AbstractGarmentFactoryMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Stocking stocking = inst.Stocking.FirstOrDefault(x => x.Id == id);
+            Stocking stocking = source.Stocking.FirstOrDefault(x => x.Id == id);
             if (stocking == null)
             {
                 return HttpNotFound();
@@ -83,11 +94,14 @@ namespace AbstractGarmentFactoryMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                //  inst.Entry(stocking).State = EntityState.Modified;
-                //  inst.SaveChanges();
-                var stockingOld = inst.Stocking.FirstOrDefault(x => stocking.Id == x.Id);
-                inst.Stocking.Remove(stockingOld);
-                inst.Stocking.Add(stocking);
+
+                var stockingOld = source.Stocking.FirstOrDefault(x => stocking.Id == x.Id);
+                if (/*customerOld.CustomerFIO != customer.CustomerFIO &&*/ null != source.Stocking.FirstOrDefault(x => stocking.StockingName == x.StockingName))
+                {
+                    return Redirect("/Exception/Index/1");
+                }
+                source.Stocking.Remove(stockingOld);
+                source.Stocking.Add(stocking);
                 return RedirectToAction("Index");
             }
             return View(stocking);
@@ -100,7 +114,7 @@ namespace AbstractGarmentFactoryMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Stocking stocking = inst.Stocking.FirstOrDefault(x => x.Id == id);
+            Stocking stocking = source.Stocking.FirstOrDefault(x => x.Id == id);
             if (stocking == null)
             {
                 return HttpNotFound();
@@ -113,8 +127,8 @@ namespace AbstractGarmentFactoryMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Stocking stocking = inst.Stocking.Find(x => x.Id == id);
-            inst.Stocking.Remove(stocking);
+            Stocking stocking = source.Stocking.Find(x => x.Id == id);
+            source.Stocking.Remove(stocking);
          //   inst.SaveChanges();
             return RedirectToAction("Index");
         }

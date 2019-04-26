@@ -49,15 +49,6 @@ namespace AbstractGarmentFactoryMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,CustomerFIO")] Customer customer)
         {
-            /*if (ModelState.IsValid)
-            {
-                source.Customer.Add(customer);
-                //inst.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(customer);*/
-
             int maxId = 0;
             for (int i = 0; i < source.Customer.Count; ++i)
             {
@@ -68,12 +59,13 @@ namespace AbstractGarmentFactoryMVC.Controllers
                 if (source.Customer[i].CustomerFIO == customer.CustomerFIO)
                 {
                     //throw new Exception("Уже есть клиент с таким ФИО");
-                    return Redirect("Exception/Index/hui tam plaval");
+                    return Redirect("/Exception/Index/0");
                 }
             }
             source.Customer.Add(new Customer { Id = maxId + 1, CustomerFIO = customer.CustomerFIO });
 
-            return View(customer);
+            //return View(customer);
+            return RedirectToAction("Index");
         }
 
         // GET: Customers/Edit/5
@@ -102,7 +94,15 @@ namespace AbstractGarmentFactoryMVC.Controllers
             {
                 //inst.Entry(customer).State = EntityState.Modified;
                 //inst.SaveChanges();
+
                 var customerOld = source.Customer.FirstOrDefault(x => customer.Id == x.Id);
+
+                if (/*customerOld.CustomerFIO != customer.CustomerFIO &&*/ null != source.Customer.FirstOrDefault(x => customer.CustomerFIO == x.CustomerFIO))
+                {
+                    //throw new Exception("Уже есть клиент с таким ФИО");
+                    return Redirect("/Exception/Index/0");
+                }
+
                 source.Customer.Remove(customerOld);
                 source.Customer.Add(customer);
                 return RedirectToAction("Index");
