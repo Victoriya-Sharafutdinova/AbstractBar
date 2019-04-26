@@ -1,4 +1,6 @@
-﻿@model AbstractGarmentFactoryModel.Indent
+﻿@using AbstractGarmentFactoryModel;
+
+@model AbstractGarmentFactoryModel.Indent
 
 @{
     ViewBag.Title = "Create";
@@ -7,10 +9,10 @@
 <h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
 <div class="form-horizontal">
     <h4>Indent</h4>
     <hr />
@@ -33,7 +35,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", @Value = "1", @min = "1" } })
             @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -41,7 +43,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Total, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @class = "form-control", disabled = "true" } })
             @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -69,3 +71,23 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+
+<script>
+    $('#Amount').blur(function () {
+        $("#Total").val(parseInt($("#Amount").val()) * @{
+
+            if (Request.Form["FabricName"] != null)
+            {
+                string selectedFabricName = Request.Form["FabricName"].ToString();
+                var fabric = (ViewBag.FabricsList as List<Fabric>).FirstOrDefault(x => x.Id == int.Parse(selectedFabricName));
+
+                if (fabric != null)
+                {
+                    @fabric.Value;
+                }
+            }
+       });
+    });
+</script>

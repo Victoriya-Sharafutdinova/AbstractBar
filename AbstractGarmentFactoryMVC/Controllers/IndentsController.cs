@@ -42,6 +42,7 @@ namespace AbstractGarmentFactoryMVC.Controllers
         // GET: Indents/Create
         public ActionResult Create()
         {
+            ViewBag.FabricsList = source.Fabric;
             ViewBag.Customers = new SelectList(source.Customer, "Id", "CustomerFIO");
             ViewBag.Fabrics = new SelectList(source.Fabric, "Id", "FabricName");
             return View();
@@ -156,15 +157,6 @@ namespace AbstractGarmentFactoryMVC.Controllers
             source.Indents.Remove(indent);
            // inst.SaveChanges();
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-            //    inst.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }
