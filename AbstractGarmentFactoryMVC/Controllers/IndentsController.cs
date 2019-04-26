@@ -18,6 +18,7 @@ namespace AbstractGarmentFactoryMVC.Controllers
         // GET: Indents
         public ActionResult Index()
         {
+            ViewBag.Customers = source.Customer;
             return View(source.Indents.ToList());
         }
 
@@ -59,10 +60,21 @@ namespace AbstractGarmentFactoryMVC.Controllers
                     maxId = source.Customer[i].Id;
                 }
             }
+
+            string selectedCustomerFIO = Request.Form["CustomerFIO"].ToString();
+            var customer = source.Customer.FirstOrDefault(x => x.Id == int.Parse(selectedCustomerFIO));
+
+            if (customer == null)
+            {
+                return RedirectToAction("/Exception/Index/0");
+            }
+
+            int customerId = customer.Id;
+
             source.Indents.Add(new Indent
             {
                 Id = maxId + 1,
-                CustomerId = indent.CustomerId,
+                CustomerId = customerId,
                 FabricId = indent.FabricId,
                 DateCreate = DateTime.Now,
                 Amount = indent.Amount,

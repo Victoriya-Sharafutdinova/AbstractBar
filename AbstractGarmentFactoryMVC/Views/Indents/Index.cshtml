@@ -1,4 +1,6 @@
-﻿@model IEnumerable<AbstractGarmentFactoryModel.Indent>
+﻿@using AbstractGarmentFactoryModel;
+
+@model IEnumerable<AbstractGarmentFactoryModel.Indent>
 
 @{
     ViewBag.Title = "Index";
@@ -12,7 +14,8 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.CustomerId)
+            @*@Html.DisplayNameFor(model => model.CustomerId)*@
+            <label class="control-label col-md-2">Клиент</label>
         </th>
         <th>
             @Html.DisplayNameFor(model => model.FabricId)
@@ -35,35 +38,46 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CustomerId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FabricId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Amount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Total)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Condition)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateCreate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateImplement)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @{
+                    //Html.DisplayFor(modelItem => item.CustomerId)
+                    var customers = ViewBag.Customers as List<Customer>;
+                    var customer = customers.FirstOrDefault(x => x.Id == item.CustomerId);
+
+                    @customer.CustomerFIO
+                    //<label class="control-label col-md-2">@customer.CustomerFIO</label>
+
+                    //Html.Display(customer.CustomerFIO);
+
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FabricId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Condition)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCreate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateImplement)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>
