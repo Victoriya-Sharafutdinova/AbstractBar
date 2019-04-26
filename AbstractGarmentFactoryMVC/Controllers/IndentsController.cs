@@ -19,6 +19,8 @@ namespace AbstractGarmentFactoryMVC.Controllers
         public ActionResult Index()
         {
             ViewBag.Customers = source.Customer;
+            ViewBag.Fabrics = source.Fabric;
+
             return View(source.Indents.ToList());
         }
 
@@ -66,16 +68,26 @@ namespace AbstractGarmentFactoryMVC.Controllers
 
             if (customer == null)
             {
-                return RedirectToAction("/Exception/Index/0");
+                return RedirectToAction("/Exception/Index/2");
             }
 
             int customerId = customer.Id;
+
+            string selectedFabricName = Request.Form["FabricName"].ToString();
+            var fabric = source.Fabric.FirstOrDefault(x => x.Id == int.Parse(selectedFabricName));
+
+            if (fabric == null)
+            {
+                return RedirectToAction("/Exception/Index/2");
+            }
+
+            int fabricId = fabric.Id;
 
             source.Indents.Add(new Indent
             {
                 Id = maxId + 1,
                 CustomerId = customerId,
-                FabricId = indent.FabricId,
+                FabricId = fabricId,
                 DateCreate = DateTime.Now,
                 Amount = indent.Amount,
                 Total = indent.Total,

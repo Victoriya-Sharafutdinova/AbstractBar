@@ -8,10 +8,10 @@ namespace AbstractGarmentFactoryMVC.Controllers
 {
     public class ExceptionController : Controller
     {
-        // GET: Exception
+        // GET: Exception/
         public ActionResult Index(int id)
         {
-            string message = "Ошибок нет. Уйди отсюда.";
+            string message = "Неизвестная ошибка";
 
             if (id == 0)
             {
@@ -22,7 +22,7 @@ namespace AbstractGarmentFactoryMVC.Controllers
                 message = "Уже есть такой компонент.";
             }
 
-            ViewBag.Message = message;
+            ViewBag.Message = id;
             return View();
         }
     }

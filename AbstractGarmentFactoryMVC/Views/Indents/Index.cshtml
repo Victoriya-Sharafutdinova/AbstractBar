@@ -3,10 +3,10 @@
 @model IEnumerable<AbstractGarmentFactoryModel.Indent>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Заказы";
 }
 
-<h2>Index</h2>
+<h2>Заказы</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -18,7 +18,8 @@
             <label class="control-label col-md-2">Клиент</label>
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FabricId)
+            @*@Html.DisplayNameFor(model => model.FabricId)*@
+            <label class="control-label col-md-2">Товар</label>
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Amount)
@@ -55,7 +56,13 @@
                 }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FabricId)
+                @{
+                    var fabrics = ViewBag.Fabrics as List<Fabric>;
+                    var fabric = fabrics.FirstOrDefault(x => x.Id == item.FabricId);
+
+                    @fabric.FabricName
+
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Amount)

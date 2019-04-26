@@ -13,7 +13,6 @@ namespace AbstractGarmentFactoryMVC.Controllers
 {
     public class CustomersController : Controller
     {
-        //private AbstractGarmentFactoryMVCContext db = new AbstractGarmentFactoryMVCContext();
         private DataListSingleton source = DataListSingleton.GetInstance();
         // GET: Customers
         public ActionResult Index()
@@ -58,13 +57,11 @@ namespace AbstractGarmentFactoryMVC.Controllers
                 }
                 if (source.Customer[i].CustomerFIO == customer.CustomerFIO)
                 {
-                    //throw new Exception("Уже есть клиент с таким ФИО");
-                    return Redirect("/Exception/Index/0");
+                    return Redirect("/Exception/Index/0");                    
                 }
             }
             source.Customer.Add(new Customer { Id = maxId + 1, CustomerFIO = customer.CustomerFIO });
 
-            //return View(customer);
             return RedirectToAction("Index");
         }
 
@@ -92,14 +89,10 @@ namespace AbstractGarmentFactoryMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                //inst.Entry(customer).State = EntityState.Modified;
-                //inst.SaveChanges();
-
                 var customerOld = source.Customer.FirstOrDefault(x => customer.Id == x.Id);
 
-                if (/*customerOld.CustomerFIO != customer.CustomerFIO &&*/ null != source.Customer.FirstOrDefault(x => customer.CustomerFIO == x.CustomerFIO))
-                {
-                    //throw new Exception("Уже есть клиент с таким ФИО");
+                if (null != source.Customer.FirstOrDefault(x => customer.CustomerFIO == x.CustomerFIO))
+                {                    
                     return Redirect("/Exception/Index/0");
                 }
 
@@ -132,17 +125,7 @@ namespace AbstractGarmentFactoryMVC.Controllers
         {
             Customer customer = source.Customer.Find(x => x.Id == id);
             source.Customer.Remove(customer);
-            //inst.SaveChanges();
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                //inst.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }
