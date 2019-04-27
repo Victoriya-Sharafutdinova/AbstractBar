@@ -11,13 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbstractGarmentFactoryServi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbstractGarmentFactoryView", "AbstractGarmentFactoryView\AbstractGarmentFactoryView.csproj", "{1B704247-1D26-4F6F-B43C-7CB48C5B2612}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbstractGarmentFactoryWeb", "AbstractGarmentFactoryWeb\AbstractGarmentFactoryWeb.csproj", "{BBFAD7AA-87CF-4C72-876B-609194A19BA6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbstractGarmentFactoryViewWeb", "AbstractGarmentFactoryViewWeb\AbstractGarmentFactoryViewWeb.csproj", "{CCFDC9E5-1A68-4135-9A44-6FFC44C2D25B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbstractGarmentFactoryMVC", "AbstractGarmentFactoryMVC\AbstractGarmentFactoryMVC.csproj", "{7E864EB4-B5EB-4437-80D8-ED3C7358E40F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbstractGarmentFactoryWebMVC", "AbstractGarmentFactoryWebMVC\AbstractGarmentFactoryWebMVC.csproj", "{04D03342-A7D6-46CE-8DCB-04ED2DBF2BB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,22 +35,10 @@ Global
 		{1B704247-1D26-4F6F-B43C-7CB48C5B2612}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B704247-1D26-4F6F-B43C-7CB48C5B2612}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B704247-1D26-4F6F-B43C-7CB48C5B2612}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BBFAD7AA-87CF-4C72-876B-609194A19BA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BBFAD7AA-87CF-4C72-876B-609194A19BA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BBFAD7AA-87CF-4C72-876B-609194A19BA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BBFAD7AA-87CF-4C72-876B-609194A19BA6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CCFDC9E5-1A68-4135-9A44-6FFC44C2D25B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CCFDC9E5-1A68-4135-9A44-6FFC44C2D25B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CCFDC9E5-1A68-4135-9A44-6FFC44C2D25B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CCFDC9E5-1A68-4135-9A44-6FFC44C2D25B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7E864EB4-B5EB-4437-80D8-ED3C7358E40F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7E864EB4-B5EB-4437-80D8-ED3C7358E40F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E864EB4-B5EB-4437-80D8-ED3C7358E40F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E864EB4-B5EB-4437-80D8-ED3C7358E40F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{04D03342-A7D6-46CE-8DCB-04ED2DBF2BB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{04D03342-A7D6-46CE-8DCB-04ED2DBF2BB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{04D03342-A7D6-46CE-8DCB-04ED2DBF2BB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{04D03342-A7D6-46CE-8DCB-04ED2DBF2BB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

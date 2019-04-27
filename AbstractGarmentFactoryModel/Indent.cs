@@ -24,6 +24,8 @@ namespace AbstractGarmentFactoryModel
         [DisplayName("Состояние")]
         public IndentStatus Condition { get; set; }
 
+        //[DataType(DataType.Date)]
+       // [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DisplayName("Дата создания")]
         public DateTime DateCreate { get; set; }
 
