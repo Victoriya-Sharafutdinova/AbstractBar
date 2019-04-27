@@ -1,5 +1,6 @@
 ﻿using AbstractGarmentFactoryModel;
 using AbstractGarmentFactoryServiceDAL.BindingModel;
+using AbstractGarmentFactoryServiceDAL.Interfaces;
 using AbstractGarmentFactoryServiceDAL.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
 {
-    public class ImplementerServiceDB
+    public class ImplementerServiceDB : IImplementerService
     {
         private AbstractDBScope context;
 
@@ -24,7 +25,8 @@ namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
             {
                 Id = rec.Id,
                 ImplementerFIO = rec.ImplementerFIO
-            }).ToList();
+            })
+            .ToList();
             return result; }
 
         public ImplementerViewModel GetElement(int id)

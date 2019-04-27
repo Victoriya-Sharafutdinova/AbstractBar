@@ -18,6 +18,7 @@ namespace AbstractGarmentFactoryRestApi.Controllers
             _service = service;
         }
 
+
         [HttpGet] public IHttpActionResult GetList()
         {
             var list = _service.GetList();

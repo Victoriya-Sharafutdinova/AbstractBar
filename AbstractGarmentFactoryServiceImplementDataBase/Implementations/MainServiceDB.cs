@@ -108,7 +108,7 @@ namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
                     throw;
                 }
             }
-        } 
+        }
 
         public void FinishIndent(IndentBindingModel model)
         {
@@ -160,7 +160,7 @@ namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
         }
 
         public List<IndentViewModel> GetFreeIndents()
-        {
+        {       
             List<IndentViewModel> result = context.Indents.Where(x => x.Condition == IndentCondition.Принят || x.Condition == IndentCondition.НедостаточноРесурсов)
                 .Select(rec => new IndentViewModel
                 {

@@ -51,7 +51,7 @@ namespace AbstractGarmentFactoryRestApi.Services
                 // забиваем мастерскую       
                 _sem.WaitOne();
                 // Типа выполняем             
-                Thread.Sleep(10000);
+                Thread.Sleep(5000);
                 _service.FinishIndent(new IndentBindingModel 
                 {
                     Id = _indentId

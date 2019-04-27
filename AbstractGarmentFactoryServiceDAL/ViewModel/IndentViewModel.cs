@@ -31,9 +31,7 @@ namespace AbstractGarmentFactoryServiceDAL.ViewModel
         [DataMember]
         public int? ImplementerId { get; set; }
 
-        [DataMember]
-        public string ImplementerName { get; set; }
-
+       
         [DataMember]
         [DisplayName("Количество")]
         public int Amount { get; set; }
@@ -53,5 +51,10 @@ namespace AbstractGarmentFactoryServiceDAL.ViewModel
         [DataMember]
         [DisplayName("Дата выполнения")]
         public string DateImplement { get; set; }
+
+        [DataMember]
+        [DisplayName("Сотрудник")]
+        public string ImplementerName { get; set; }
+
     }
 }

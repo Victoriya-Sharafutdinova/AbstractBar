@@ -27,7 +27,7 @@ namespace AbstractGarmentFactoryView
         {
             try
             {
-                List<ImplementerViewModel> list = APICustomer.GetRequest<List<ImplementerViewModel>>("api/Implementers/GetList");
+                List<ImplementerViewModel> list = APICustomer.GetRequest<List<ImplementerViewModel>>("api/Implementer/GetList");
                 if (list != null)
                 {
                     dataGridView1.DataSource = list;
