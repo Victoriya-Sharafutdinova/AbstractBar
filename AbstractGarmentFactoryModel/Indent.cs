@@ -14,6 +14,8 @@ namespace AbstractGarmentFactoryModel
 
         public int FabricId { get; set; }
 
+        public int? ImplementerId { get; set; }
+
         public int Amount { get; set; }
 
         public decimal Total { get; set; }
