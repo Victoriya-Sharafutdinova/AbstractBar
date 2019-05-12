@@ -34,5 +34,7 @@ namespace AbstractGarmentFactoryServiceImplementDataBase
 
         public virtual DbSet<Implementer> Implementer { get; set; }
 
+        public virtual DbSet<MessageInfo> MessageInfos { get; set; }
+
     }
 }
