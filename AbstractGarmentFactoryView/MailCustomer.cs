@@ -32,19 +32,16 @@ namespace AbstractGarmentFactoryView
 
             stream = new SslStream(mailCustomer.GetStream());
             stream.AuthenticateAsClient("pop.gmail.com");
-
             reader = new StreamReader(stream, Encoding.ASCII);
             writer = new StreamWriter(stream);
-
             response = reader.ReadLine();
             response = SendRequest(reader, writer,
-                string.Format("USER {0}", ConfigurationManager.AppSettings["MailLogin"]),
-                "Ошибка авторизации, неверный логин");
-
-            response = SendRequest(reader, writer, string.Format("PASS {0}", 
-                ConfigurationManager.AppSettings["MailPassword"]), 
-                "Ошибка авторизации, неверный пароль");
-
+            string.Format("USER {0}", ConfigurationManager.AppSettings["MailLogin"]),
+            "Ошибка авторизации, неверный логин");
+            response = SendRequest(reader, writer,
+            string.Format("PASS {0}",
+           ConfigurationManager.AppSettings["MailPassword"]),
+            "Ошибка авторизации, неверный пароль");
             CheckMail();
         }
 
@@ -54,24 +51,23 @@ namespace AbstractGarmentFactoryView
 
             try
             {
-                response = SendRequest(reader, writer, string.Format("stat"),
-                    "Ошибка. Неизвестная команда (stat)");
-
+                response = SendRequest(reader, writer,
+                string.Format("stat"),
+                "Ошибка. Неизвестная команда (stat)");
                 string[] numbers = Regex.Split(response, @"\D+");
-
                 int number = Convert.ToInt32(numbers[1]);
-
                 if (number > 0)
                 {
                     GetMessages(number);
                 }
-                response = SendRequest(reader, writer, string.Format("Quit"), 
-                    "Ошибка. Неизвестная команда (Quit)");
-
+                response = SendRequest(reader, writer,
+                string.Format("Quit"),
+                "Ошибка. Неизвестная команда (Quit)");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
             }
         }
 

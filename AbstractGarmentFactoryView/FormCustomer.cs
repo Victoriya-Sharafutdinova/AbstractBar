@@ -40,11 +40,16 @@ namespace AbstractGarmentFactoryView
                 {
                     CustomerViewModel customer = APICustomer.GetRequest<CustomerViewModel>("api/Customer/Get/" + id.Value);
                     textBoxFIO.Text = customer.CustomerFIO;
-                    textBoxMail.Text = customer.Mail;
-                    dataGridView.DataSource = customer.Messages;
-                    dataGridView.Columns[0].Visible = false;
-                    dataGridView.Columns[1].Visible = false;
-                    dataGridView.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    if (customer != null)
+                    {
+                        textBoxFIO.Text = customer.CustomerFIO;
+                        textBoxMail.Text = customer.Mail;
+                        dataGridView.DataSource = customer.Messages;
+                        dataGridView.Columns[0].Visible = false;
+                        dataGridView.Columns[1].Visible = false;
+                        dataGridView.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    }
+                   
                 }
                 catch (Exception ex)
                 {
@@ -72,15 +77,16 @@ namespace AbstractGarmentFactoryView
             }
             if (id.HasValue)
             {
-                APICustomer.PostRequest<CustomerBindingModel, bool>("api/Stocking/UpdElement", new CustomerBindingModel
+                APICustomer.PostRequest<CustomerBindingModel, bool>("api/Customer/UpdElement", new CustomerBindingModel
                 {
                     Id = id.Value,
                     CustomerFIO = fio,
-                    Mail = mail });
+                    Mail = mail
+                });
             }
             else
             {
-                APICustomer.PostRequest<CustomerBindingModel, bool>("api/Stocking/AddElement", new CustomerBindingModel
+                APICustomer.PostRequest<CustomerBindingModel, bool>("api/Customer/AddElement", new CustomerBindingModel
                 {
                     CustomerFIO = fio,
                     Mail = mail
