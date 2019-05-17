@@ -1,4 +1,5 @@
-﻿using AbstractGarmentFactoryServiceDAL.Interfaces;
+﻿using AbstractGarmentFactoryServiceDAL.BindingModel;
+using AbstractGarmentFactoryServiceDAL.Interfaces;
 using AbstractGarmentFactoryServiceDAL.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -9,20 +10,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Unity;
 
 namespace AbstractGarmentFactoryView
 {
     public partial class FormCustomers : Form
     {
-        [Dependency] public new IUnityContainer Container { get; set; }
-
-        private readonly ICustomerService service;
-
-        public FormCustomers(ICustomerService service)
+        public FormCustomers()
         {
             InitializeComponent();
-            this.service = service;
         }
 
         private void FormCustomer_Load(object sender, EventArgs e)
@@ -34,7 +29,7 @@ namespace AbstractGarmentFactoryView
         {
             try
             {
-                List<CustomerViewModel> list = service.GetList();
+                List<CustomerViewModel> list = APICustomer.GetRequest<List<CustomerViewModel>>("api/Customer/GetList");
                 if (list != null)
                 {
                     dataGridView1.DataSource = list;
@@ -51,11 +46,16 @@ namespace AbstractGarmentFactoryView
         private void buttonDel_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count == 1)
-            { if (MessageBox.Show("Удалить запись", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                { int id = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells[0].Value);
+            {
+                if (MessageBox.Show("Удалить запись", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    int id = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells[0].Value);
                     try
                     {
-                        service.DelElement(id);
+                        APICustomer.PostRequest<CustomerBindingModel, bool>("api/Customer/DelElement", new CustomerBindingModel
+                        {
+                            Id = id
+                        });
                     }
                     catch (Exception ex)
                     {
@@ -70,8 +70,11 @@ namespace AbstractGarmentFactoryView
         {
             if (dataGridView1.SelectedRows.Count == 1)
             {
-                var form = Container.Resolve<FormCustomer>();
+                var form = new FormCustomer();
+
                 form.Id = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells[0].Value);
+                
+                
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     LoadData();
@@ -81,7 +84,7 @@ namespace AbstractGarmentFactoryView
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormCustomer>();
+            var form = new FormCustomer();
             if (form.ShowDialog() == DialogResult.OK)
             {
                 LoadData();

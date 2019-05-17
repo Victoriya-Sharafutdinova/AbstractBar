@@ -1,4 +1,5 @@
-﻿using AbstractGarmentFactoryServiceDAL.Interfaces;
+﻿using AbstractGarmentFactoryServiceDAL.BindingModel;
+using AbstractGarmentFactoryServiceDAL.Interfaces;
 using AbstractGarmentFactoryServiceDAL.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -9,20 +10,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Unity;
 
 namespace AbstractGarmentFactoryView
 {
     public partial class FormStockings : Form
     {
-        [Dependency] public new IUnityContainer Container { get; set; }
-
-        private readonly IStockingService service;
-
-        public FormStockings(IStockingService service)
+        public FormStockings()
         {
             InitializeComponent();
-            this.service = service;
         }
 
         private void FormStockings_Load(object sender, EventArgs e)
@@ -34,7 +29,7 @@ namespace AbstractGarmentFactoryView
         {
             try
             {
-                List<StockingViewModel> list = service.GetList();
+                List<StockingViewModel> list = APICustomer.GetRequest<List<StockingViewModel>>("api/Stocking/GetList");
                 if (list != null)
                 {
                     dataGridView1.DataSource = list;
@@ -57,7 +52,10 @@ namespace AbstractGarmentFactoryView
                     int id = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells[0].Value);
                     try
                     {
-                        service.DelElement(id);
+                        APICustomer.PostRequest<StockingBindingModel, bool>("api/Stocking/DelElement", new StockingBindingModel
+                        {
+                            Id = id
+                        });
                     }
                     catch (Exception ex)
                     {
@@ -71,7 +69,7 @@ namespace AbstractGarmentFactoryView
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormStocking>();
+            var form = new FormStocking();
             if (form.ShowDialog() == DialogResult.OK)
             {
                 LoadData();

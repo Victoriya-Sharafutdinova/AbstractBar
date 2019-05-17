@@ -4,33 +4,21 @@ using AbstractGarmentFactoryServiceDAL.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Unity;
 
 namespace AbstractGarmentFactoryView
 {
     public partial class FormPutOnStorage : Form
     {
-        [Dependency] public new IUnityContainer Container { get; set; }
-
-        private readonly IStorageService serviceS;
-
-        private readonly IStockingService serviceC;
-
-        private readonly IMainService serviceM;
-
-        public FormPutOnStorage(IStorageService serviceS, IStockingService serviceC, IMainService serviceM)
+        public FormPutOnStorage()
         {
             InitializeComponent();
-            this.serviceS = serviceS;
-            this.serviceC = serviceC;
-            this.serviceM = serviceM;
         }
 
         private void FormPutOnStock_Load(object sender, EventArgs e)
         {
             try
             {
-                List<StockingViewModel> listC = serviceC.GetList();
+                List<StockingViewModel> listC = APICustomer.GetRequest<List<StockingViewModel>>("api/Stocking/GetList");
                 if (listC != null)
                 {
                     comboBoxStocking.DisplayMember = "StockingName";
@@ -38,7 +26,7 @@ namespace AbstractGarmentFactoryView
                     comboBoxStocking.DataSource = listC;
                     comboBoxStocking.SelectedItem = null;
                 }
-                List<StorageViewModel> listS = serviceS.GetList();
+                List<StorageViewModel> listS = APICustomer.GetRequest<List<StorageViewModel>>("api/Storage/GetList");
                 if (listS != null)
                 {
                     comboBoxStorage.DisplayMember = "StorageName";
@@ -72,7 +60,7 @@ namespace AbstractGarmentFactoryView
             }
             try
             {
-                serviceM.PutStockingOnStorage(new StorageStockingBindingModel
+                APICustomer.PostRequest<StorageStockingBindingModel, bool>("api/Main/PutStockingOnStorage", new StorageStockingBindingModel
                 {
                     StockingId = Convert.ToInt32(comboBoxStocking.SelectedValue),
                     StorageId = Convert.ToInt32(comboBoxStorage.SelectedValue),

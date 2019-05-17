@@ -9,18 +9,15 @@ using System.Runtime.Serialization;
 namespace AbstractGarmentFactoryServiceDAL.BindingModel
 {
     [DataContract]
-    public class StorageStockingBindingModel
+    public class ReportBindingModel
     {
         [DataMember]
-        public int Id { get; set; }
+        public string FileName { get; set; }
 
         [DataMember]
-        public int StorageId { get; set; }
+        public DateTime? DateFrom { get; set; }
 
         [DataMember]
-        public int StockingId { get; set; }
-
-        [DataMember]
-        public int Amount { get; set; }
+        public DateTime? DateTo { get; set; }
     }
 }
