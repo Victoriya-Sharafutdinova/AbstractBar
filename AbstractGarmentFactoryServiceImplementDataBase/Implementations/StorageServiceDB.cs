@@ -21,10 +21,22 @@ namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
 
         public List<StorageViewModel> GetList()
         {
-            List<StorageViewModel> result = context.Storages.Select(rec => new StorageViewModel
+            List<StorageViewModel> result = context.Storages.Select(rec => new        
+            StorageViewModel
             {
                 Id = rec.Id,
-                StorageName = rec.StorageName
+                StorageName = rec.StorageName,
+                StorageStocking = context.StorageStockings
+            .Where(recPC => recPC.StorageId == rec.Id)
+            .Select(recPC => new StorageStockingViewModel
+            {
+                Id = recPC.Id,
+                StorageId = recPC.StorageId,
+                StockingId = recPC.StockingId,
+                StockingName = recPC.Stockings.StockingName,
+                Amount = recPC.Amount
+            })
+            .ToList()
             })
             .ToList();
             return result;
@@ -38,7 +50,18 @@ namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
                 return new StorageViewModel
                 {
                     Id = element.Id,
-                    StorageName = element.StorageName
+                    StorageName = element.StorageName,
+                    StorageStocking = context.StorageStockings
+                    .Where(recPC => recPC.StorageId == element.Id)
+                    .Select(recPC => new StorageStockingViewModel
+                    {
+                        Id = recPC.Id,
+                        StorageId = recPC.StorageId,
+                        StockingId = recPC.StockingId,
+                        StockingName = recPC.Stockings.StockingName,
+                        Amount = recPC.Amount
+                    })
+                    .ToList()
                 };
             }
             throw new Exception("Элемент не найден");
