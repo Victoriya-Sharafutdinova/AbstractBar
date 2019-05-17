@@ -27,12 +27,6 @@ namespace AbstractGarmentFactoryView
             this.service = service;
         }
 
-        //private void FormCustomerIndents_Load(object sender, EventArgs e)
-        //{
-
-        //    this.reportViewer.RefreshReport();
-        //}
-
         private void buttonCreate_Click(object sender, EventArgs e)
         {
             if (dateTimePickerFrom.Value.Date >= dateTimePickerTo.Value.Date)
