@@ -1,6 +1,4 @@
-﻿@using AbstractGarmentFactoryModel;
-
-@model IEnumerable<AbstractGarmentFactoryModel.Indent>
+﻿@model IEnumerable<AbstractGarmentFactoryServiceDAL.ViewModel.IndentViewModel>
 
 @{
     ViewBag.Title = "Заказы";
@@ -14,19 +12,17 @@
 <table class="table">
     <tr>
         <th>
-            @*@Html.DisplayNameFor(model => model.CustomerId)*@
-            Клиент
+            @Html.DisplayNameFor(model => model.CustomerFIO)
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.FabricId)*@
-            Товар
+            @Html.DisplayNameFor(model => model.FabricName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Amount)
         </th>
-        @*<th>
+        <th>
             @Html.DisplayNameFor(model => model.Total)
-        </th>*@
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Condition)
         </th>
@@ -41,50 +37,35 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @{
-                    //Html.DisplayFor(modelItem => item.CustomerId)
-                    var customers = ViewBag.Customers as List<Customer>;
-                    var customer = customers.FirstOrDefault(x => x.Id == item.CustomerId);
-
-                    @customer.CustomerFIO
-                    //<label class="control-label col-md-2">@customer.CustomerFIO</label>
-
-                    //Html.Display(customer.CustomerFIO);
-
-                }
-            </td>
-            <td>
-                @{
-                    var fabrics = ViewBag.Fabrics as List<Fabric>;
-                    var fabric = fabrics.FirstOrDefault(x => x.Id == item.FabricId);
-
-                    @fabric.FabricName
-
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.Total)
-            </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.Condition)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateCreate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateImplement)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
+    <tr>
+        <td>
+            @Html.DisplayNameFor(model => model.CustomerFIO)
+        </td>
+        <td>
+            @Html.DisplayNameFor(model => model.FabricName)
+        </td>
+        <td>
+            @Html.DisplayNameFor(model => model.Amount)
+        </td>
+        <td>
+            @Html.DisplayNameFor(model => model.Total)
+        </td>
+        <td>
+            @Html.DisplayNameFor(model => model.Condition)
+        </td>
+        <td>
+            @Html.DisplayNameFor(model => model.DateCreate)
+        </td>
+        <td>
+            @Html.DisplayNameFor(model => model.DateImplement)
+        </td>
+        <td></td>
+        <td>
+            @Html.ActionLink("Отдать на выполнение", "SetStatus", new { id = item.Id, status = "Processing" }) |
+            @Html.ActionLink("Заказ готов", "SetStatus", new { id = item.Id, status = "Ready" }) |
+            @Html.ActionLink("Заказ оплачен", "SetStatus", new { id = item.Id, status = "Paid" })
+        </td>
+    </tr>
     }
 
 </table>

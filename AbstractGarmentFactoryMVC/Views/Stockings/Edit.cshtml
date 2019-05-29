@@ -1,5 +1,4 @@
-﻿@model AbstractGarmentFactoryModel.Stocking
-
+﻿@model AbstractGarmentFactoryServiceDAL.BindingModel.StockingBindingModel
 @{
     ViewBag.Title = "Edit";
 }
@@ -12,10 +11,9 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Stocking</h4>
+        <h4>StockingBindingModel</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
             @Html.LabelFor(model => model.StockingName, htmlAttributes: new { @class = "control-label col-md-2" })

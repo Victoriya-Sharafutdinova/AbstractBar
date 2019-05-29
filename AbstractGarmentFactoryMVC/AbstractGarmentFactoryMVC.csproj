@@ -130,6 +130,7 @@
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\ExceptionController.cs" />
     <Compile Include="Controllers\FabricsController.cs" />
+    <Compile Include="Controllers\FabricssController.cs" />
     <Compile Include="Controllers\FabricStockingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IndentsController.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Globals.cs" />
     <Compile Include="Migrations\201904260415480_InitialCreate.cs" />
     <Compile Include="Migrations\201904260415480_InitialCreate.Designer.cs">
       <DependentUpon>201904260415480_InitialCreate.cs</DependentUpon>
@@ -191,7 +193,7 @@
     <Content Include="Views\Customers\Details.cshtml" />
     <Content Include="Views\Customers\Edit.cshtml" />
     <Content Include="Views\Customers\Index.cshtml" />
-    <Content Include="Views\Fabrics\Create.cshtml" />
+    <Content Include="Views\Fabrics\AddStocking.cshtml" />
     <Content Include="Views\Fabrics\Delete.cshtml" />
     <Content Include="Views\Fabrics\Details.cshtml" />
     <Content Include="Views\Fabrics\Edit.cshtml" />
@@ -212,6 +214,7 @@
     <Content Include="Views\FabricStockings\Edit.cshtml" />
     <Content Include="Views\FabricStockings\Index.cshtml" />
     <Content Include="Views\Exception\Index.cshtml" />
+    <Content Include="Views\Fabricss\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -8,123 +8,59 @@ using System.Web;
 using System.Web.Mvc;
 using AbstractGarmentFactoryMVC.Models;
 using AbstractGarmentFactoryModel;
+using AbstractGarmentFactoryServiceDAL.Interfaces;
+using AbstractGarmentFactoryServiceDAL.BindingModel;
 
 namespace AbstractGarmentFactoryMVC.Controllers
 {
     public class CustomersController : Controller
     {
-        private DataListSingleton source = DataListSingleton.GetInstance();
-        // GET: Customers
+        public ICustomerService service = Globals.CustomerService;
         public ActionResult Index()
         {
-            return View(source.Customer.ToList());
+            return View(service.GetList());
         }
 
-        // GET: Customers/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Customer customer = source.Customer.Find(x => x.Id == id);
-            if (customer == null)
-            {
-                return HttpNotFound();
-            }
-            return View(customer);
-        }
-
-        // GET: Customers/Create
         public ActionResult Create()
         {
             return View();
         }
-
-        // POST: Customers/Create
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
+       
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,CustomerFIO")] Customer customer)
+        public ActionResult CreatePost()
         {
-            int maxId = 0;
-            for (int i = 0; i < source.Customer.Count; ++i)
+            service.AddElement(new CustomerBindingModel
             {
-                if (source.Customer[i].Id > maxId)
-                {
-                    maxId = source.Customer[i].Id;
-                }
-                if (source.Customer[i].CustomerFIO == customer.CustomerFIO)
-                {
-                    return Redirect("/Exception/Index/0");                    
-                }
-            }
-            source.Customer.Add(new Customer { Id = maxId + 1, CustomerFIO = customer.CustomerFIO });
-
+                CustomerFIO = Request["CustomerFIO"]
+            });
             return RedirectToAction("Index");
         }
 
-        // GET: Customers/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int id)
         {
-            if (id == null)
+            var viewModel = service.GetElement(id);
+            var bindingModel = new CustomerBindingModel
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Customer customer = source.Customer.FirstOrDefault(x => x.Id == id);
-            if (customer == null)
-            {
-                return HttpNotFound();
-            }
-            return View(customer);
+                Id = id,
+                CustomerFIO = viewModel.CustomerFIO
+            };
+            return View(bindingModel);
         }
 
-        // POST: Customers/Edit/5
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,CustomerFIO")] Customer customer)
+        public ActionResult EditPost()
         {
-            if (ModelState.IsValid)
+            service.UpdElement(new CustomerBindingModel
             {
-                var customerOld = source.Customer.FirstOrDefault(x => customer.Id == x.Id);
-
-                if (null != source.Customer.FirstOrDefault(x => customer.CustomerFIO == x.CustomerFIO))
-                {                    
-                    return Redirect("/Exception/Index/0");
-                }
-
-                source.Customer.Remove(customerOld);
-                source.Customer.Add(customer);
-                return RedirectToAction("Index");
-            }
-            return View(customer);
+                Id = int.Parse(Request["CustomerId"]),
+                CustomerFIO = Request["CustomerFIO"]
+            });
+            return RedirectToAction("Index");
         }
 
-        // GET: Customers/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Customer customer = source.Customer.FirstOrDefault(x => x.Id == id);
-            if (customer == null)
-            {
-                return HttpNotFound();
-            }
-            return View(customer);
-        }
-
-        // POST: Customers/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Customer customer = source.Customer.Find(x => x.Id == id);
-            source.Customer.Remove(customer);
+            service.DelElement(id);
             return RedirectToAction("Index");
         }
     }
