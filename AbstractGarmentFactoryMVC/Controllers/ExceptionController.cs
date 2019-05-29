@@ -22,7 +22,7 @@ namespace AbstractGarmentFactoryMVC.Controllers
                 message = "Уже есть такой компонент.";
             }
 
-            ViewBag.Message = id;
+            ViewBag.Message = message;
             return View();
         }
     }
