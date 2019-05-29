@@ -21,7 +21,7 @@
     <div class="form-group">
         <label class="control-label col-md-2">Изделие</label>
         <div class="col-md-10">
-            @Html.DropDownList("Id", ViewBag.Fabrics as SelectList, new { @class = "form-control" })
+            @Html.DropDownList("FabricId", ViewBag.Fabrics as SelectList, new { @class = "form-control" })
         </div>
     </div>
 
@@ -29,7 +29,7 @@
         <label class="control-label col-md-2">Клиент</label>
 
         <div class="col-md-10">
-            @Html.DropDownList("Id", ViewBag.Customers as SelectList, new { @class = "form-control" })
+            @Html.DropDownList("CustomerId", ViewBag.Customers as SelectList, new { @class = "form-control" })
         </div>
     </div>
 

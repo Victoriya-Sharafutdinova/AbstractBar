@@ -39,15 +39,15 @@ namespace AbstractGarmentFactoryMVC.Controllers
         [HttpPost]
         public ActionResult CreatePost()
         {
-            var fabricId = int.Parse(Request.Form["Id"]);
-            var customerId = int.Parse(Request.Form["Id"]);
+            var fabricId = int.Parse(Request["FabricId"]);
+            var customerId = int.Parse(Request["CustomerId"]);
             var amount = int.Parse(Request["Amount"]);
             var total = CalcSum(fabricId, amount);
 
             mainService.CreateIndent(new IndentBindingModel
             {
-                CustomerId = customerId,
                 FabricId = fabricId,
+                CustomerId = customerId,                
                 Amount = amount,
                 Total = total
 
@@ -57,7 +57,7 @@ namespace AbstractGarmentFactoryMVC.Controllers
 
         private Decimal CalcSum(int fabricId, int fabricCount)
         {
-            FabricViewModel fabric = fabricsService.GetElement(fabricId);
+            FabricViewModel fabric = fabricService.GetElement(fabricId);
             return fabricCount * fabric.Value;
         }
 

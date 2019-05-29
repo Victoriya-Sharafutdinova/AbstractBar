@@ -52,7 +52,7 @@ namespace AbstractGarmentFactoryMVC.Controllers
         {
             service.UpdElement(new CustomerBindingModel
             {
-                Id = int.Parse(Request["CustomerId"]),
+                Id = int.Parse(Request["Id"]),
                 CustomerFIO = Request["CustomerFIO"]
             });
             return RedirectToAction("Index");
