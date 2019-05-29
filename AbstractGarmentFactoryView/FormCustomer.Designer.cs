@@ -126,6 +126,7 @@
             this.Controls.Add(this.label1);
             this.Name = "FormCustomer";
             this.Text = "Клиент";
+            this.Load += new System.EventHandler(this.FormCustomer_Load);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
