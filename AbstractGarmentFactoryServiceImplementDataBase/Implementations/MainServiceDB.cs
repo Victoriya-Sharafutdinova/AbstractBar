@@ -52,18 +52,21 @@ namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
             {
                 CustomerId = model.CustomerId,
                 FabricId = model.FabricId,
+                ImplementerId = model.ImplementerId,
                 DateCreate = DateTime.Now,
                 Amount = model.Amount,
                 Total = model.Total,
                 Condition = IndentCondition.Принят
             };
-            context.Indents.Add(indent);
-            context.SaveChanges();
+         //   context.Indents.Add(indent);
 
-            var client = context.Customers.FirstOrDefault(x => x.Id == model.CustomerId);
-            SendEmail(client.Mail, "Оповещение по заказам", 
+            var customer = context.Customers.FirstOrDefault(x => x.Id == model.CustomerId);
+            SendEmail(customer.Mail, "Оповещение по заказам", 
                 string.Format("Заказ №{0} от {1} создан успешно",
                 indent.Id, indent.DateCreate.ToShortDateString()));
+
+            context.SaveChanges();
+
         }
 
         public void TakeIndentInWork(IndentBindingModel model)
@@ -84,13 +87,13 @@ namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
                     }
                     var fabricStockings = context.FabricStockings
                         .Include(rec => rec.Stocking)
-                        .Where(rec => rec.FabricId == element.FabricId);
+                        .Where(rec => rec.FabricId == element.FabricId).ToList();
                     // списываем          
                     foreach (var fabricStocking in fabricStockings)
                     {
                         int amountOnStorages = fabricStocking.Amount * element.Amount;
                         var storageStockings = context.StorageStockings
-                            .Where(rec => rec.StockingId == fabricStocking.StockingId);
+                            .Where(rec => rec.StockingId == fabricStocking.StockingId).ToList();
                         foreach (var storageStocking in storageStockings)
                         {
                             // компонентов на одном слкаде может не хватать     
@@ -119,7 +122,6 @@ namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
                     context.SaveChanges();
                     SendEmail(element.Customer.Mail, "Оповещение по заказам", string.Format("Заказ №{0} от {1} передеан в работу", element.Id, element.DateCreate.ToShortDateString()));
                     transaction.Commit();
-
                 }
                 catch (Exception)
                 {
