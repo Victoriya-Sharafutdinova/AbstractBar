@@ -1,0 +1,71 @@
+﻿@model IEnumerable<AbstractGarmentFactoryServiceDAL.ViewModel.IndentViewModel>
+
+@{
+    ViewBag.Title = "Заказы";
+}
+
+<h2>Заказы</h2>
+@Html.ValidationSummary(true)
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CustomerFIO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FabricName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Total)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Condition)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateCreate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateImplement)
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.CustomerFIO)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.FabricName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Condition)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.DateCreate)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.DateImplement)
+            </td>
+            <td></td>
+            <td>
+                @Html.ActionLink("Отдать на выполнение", "SetStatus", new { id = item.Id, status = "Processing" }) |
+                @Html.ActionLink("Заказ готов", "SetStatus", new { id = item.Id, status = "Ready" }) |
+                @Html.ActionLink("Заказ оплачен", "SetStatus", new { id = item.Id, status = "Paid" })
+            </td>
+        </tr>
+    }
+
+</table>
