@@ -39,6 +39,7 @@ namespace AbstractGarmentFactoryRestApi.Controllers
         {
             _service.CreateIndent(model);
         }
+
          
         [HttpPost]
         public void TakeIndentInWork(IndentBindingModel model)
@@ -51,6 +52,7 @@ namespace AbstractGarmentFactoryRestApi.Controllers
         {
             _service.FinishIndent(model);
         } 
+
 
         [HttpPost]
         public void PayIndent(IndentBindingModel model)

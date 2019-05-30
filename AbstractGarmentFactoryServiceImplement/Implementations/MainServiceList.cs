@@ -153,13 +153,15 @@ namespace AbstractGarmentFactoryServiceImplement.Implementations
         public List<IndentViewModel> GetFreeIndents()
         {
             List<IndentViewModel> result = source.Indents
+
+            .Where(x => x.Condition == IndentCondition.Принят || x.Condition == IndentCondition.НедостаточноРесурсов)
+
             .Select(rec => new IndentViewModel
             {
                 Id = rec.Id
             })
             .ToList();
             return result;
-
         }
     }
 }
