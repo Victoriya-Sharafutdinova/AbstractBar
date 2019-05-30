@@ -31,5 +31,8 @@ namespace AbstractGarmentFactoryServiceImplementDataBase
         public virtual DbSet<Storage> Storages { get; set; }
 
         public virtual DbSet<StorageStocking> StorageStockings { get; set; }
+
+        public virtual DbSet<Implementer> Implementer { get; set; }
+
     }
 }

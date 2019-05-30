@@ -63,6 +63,7 @@
     <Compile Include="AbstractDBScope.cs" />
     <Compile Include="Implementations\CustomerServiceDB.cs" />
     <Compile Include="Implementations\FabricServiceDB.cs" />
+    <Compile Include="Implementations\ImplementerServiceDB.cs" />
     <Compile Include="Implementations\MainServiceDB.cs" />
     <Compile Include="Implementations\StockingServiceDB.cs" />
     <Compile Include="Implementations\StorageServiceDB.cs" />
@@ -74,6 +75,10 @@
     <Compile Include="Migrations\201903161212502_SecondMigration.Designer.cs">
       <DependentUpon>201903161212502_SecondMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904270817369_ThirdMigration.cs" />
+    <Compile Include="Migrations\201904270817369_ThirdMigration.Designer.cs">
+      <DependentUpon>201904270817369_ThirdMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -83,7 +88,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Resources\TIMCYR.TTF" />
   </ItemGroup>
@@ -96,6 +103,10 @@
       <Project>{d313478b-d385-4243-b9c5-387eb73ca6f6}</Project>
       <Name>AbstractGarmentFactoryServiceDAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AbstractGarmentFactoryServiceImplement\AbstractGarmentFactoryServiceImplement.csproj">
+      <Project>{1c771b32-3715-4769-88b8-5a76025aa4e8}</Project>
+      <Name>AbstractGarmentFactoryServiceImplement</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201903160819058_FirstMigration.resx">
@@ -103,6 +114,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903161212502_SecondMigration.resx">
       <DependentUpon>201903161212502_SecondMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904270817369_ThirdMigration.resx">
+      <DependentUpon>201904270817369_ThirdMigration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

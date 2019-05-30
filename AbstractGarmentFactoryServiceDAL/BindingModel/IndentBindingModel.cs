@@ -21,6 +21,9 @@ namespace AbstractGarmentFactoryServiceDAL.BindingModel
         public int FabricId { get; set; }
 
         [DataMember]
+        public int? ImplementerId { get; set; }
+
+        [DataMember]
         public int Amount { get; set; }
 
         [DataMember]
