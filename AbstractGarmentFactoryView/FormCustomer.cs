@@ -38,18 +38,13 @@ namespace AbstractGarmentFactoryView
             {
                 try
                 {
-                    CustomerViewModel customer = APICustomer.GetRequest<CustomerViewModel>("api/Customer/Get/" + id.Value);
+                    CustomerViewModel customer = APICustomer.GetRequest<CustomerViewModel>("api/Customer/Get/" + id.Value);                    
                     textBoxFIO.Text = customer.CustomerFIO;
-                    if (customer != null)
-                    {
-                        textBoxFIO.Text = customer.CustomerFIO;
-                        textBoxMail.Text = customer.Mail;
-                        dataGridView.DataSource = customer.Messages;
-                        dataGridView.Columns[0].Visible = false;
-                        dataGridView.Columns[1].Visible = false;
-                        dataGridView.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    }
-                   
+                    textBoxMail.Text = customer.Mail;
+                    dataGridView.DataSource = customer.Messages;
+                    dataGridView.Columns[0].Visible = false;
+                    dataGridView.Columns[1].Visible = false;
+                    dataGridView.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;       
                 }
                 catch (Exception ex)
                 {

@@ -33,7 +33,8 @@ namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
                     Subject = rec.Subject,
                     Body = rec.Body
                 })
-                .ToList(); return result;
+                .ToList();
+            return result;
         }
 
         public MessageInfoViewModel GetElement(int id)

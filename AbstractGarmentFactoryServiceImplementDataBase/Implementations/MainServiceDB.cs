@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using AbstractGarmentFactoryServiceDAL.Interfaces;
 using System.Net;
 using System.Net.Mail;
-using System.Configuration;
 
 
 namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
