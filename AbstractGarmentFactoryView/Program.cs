@@ -1,7 +1,10 @@
 ﻿using AbstractGarmentFactoryServiceDAL.Interfaces;
 using AbstractGarmentFactoryServiceImplement.Implementations;
+using AbstractGarmentFactoryServiceImplementDataBase;
+using AbstractGarmentFactoryServiceImplementDataBase.Implementations;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -28,11 +31,12 @@ namespace AbstractGarmentFactoryView
         public static IUnityContainer BuildUnityContainer()
         {
             var currentContainer = new UnityContainer();
-            currentContainer.RegisterType<ICustomerService, CustomerServiceList>(new HierarchicalLifetimeManager());
-            currentContainer.RegisterType<IStockingService, StockingServiceList>(new HierarchicalLifetimeManager());
-            currentContainer.RegisterType<IFabricService, FabricServiceList>(new HierarchicalLifetimeManager());
-            currentContainer.RegisterType<IMainService, MainServiceList>(new HierarchicalLifetimeManager());
-            currentContainer.RegisterType<IStorageService, StorageServiceList>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<DbContext, AbstractDBScope>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<ICustomerService, CustomerServiceDB>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IStockingService, StockingServiceDB>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IFabricService, FabricServiceDB>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IMainService, MainServiceDB>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IStorageService, StorageServiceDB>(new HierarchicalLifetimeManager());
 
             return currentContainer;
         }

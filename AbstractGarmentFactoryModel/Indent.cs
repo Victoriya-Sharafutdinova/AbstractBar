@@ -29,5 +29,9 @@ namespace AbstractGarmentFactoryModel
 
         [DisplayName("Дата выполнения")]
         public DateTime? DateImplement { get; set; }
+
+        public virtual Customer Customer { get; set; }
+
+        public virtual Fabric Fabric { get; set; }
     }
 }
