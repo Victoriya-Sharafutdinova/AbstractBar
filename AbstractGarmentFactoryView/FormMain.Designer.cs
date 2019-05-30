@@ -71,28 +71,28 @@
             // клиентыToolStripMenuItem
             // 
             this.клиентыToolStripMenuItem.Name = "клиентыToolStripMenuItem";
-            this.клиентыToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.клиентыToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.клиентыToolStripMenuItem.Text = "Клиенты";
             this.клиентыToolStripMenuItem.Click += new System.EventHandler(this.клиентыToolStripMenuItem_Click);
             // 
             // ингредиентыToolStripMenuItem
             // 
             this.ингредиентыToolStripMenuItem.Name = "ингредиентыToolStripMenuItem";
-            this.ингредиентыToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.ингредиентыToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.ингредиентыToolStripMenuItem.Text = "Заготовки";
             this.ингредиентыToolStripMenuItem.Click += new System.EventHandler(this.заготовкиToolStripMenuItem_Click);
             // 
             // коктейлиToolStripMenuItem
             // 
             this.коктейлиToolStripMenuItem.Name = "коктейлиToolStripMenuItem";
-            this.коктейлиToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.коктейлиToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.коктейлиToolStripMenuItem.Text = "Изделия";
             this.коктейлиToolStripMenuItem.Click += new System.EventHandler(this.изделияToolStripMenuItem_Click);
             // 
             // складыToolStripMenuItem
             // 
             this.складыToolStripMenuItem.Name = "складыToolStripMenuItem";
-            this.складыToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.складыToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.складыToolStripMenuItem.Text = "Склады";
             this.складыToolStripMenuItem.Click += new System.EventHandler(this.складыToolStripMenuItem_Click);
             // 

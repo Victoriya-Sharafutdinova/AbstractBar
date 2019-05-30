@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -12,6 +14,13 @@ namespace AbstractGarmentFactoryModel
         public int Id { get; set; }
 
         [DisplayName("Название")]
+        [Required]
         public string StockingName { get; set; }
+
+        [ForeignKey("StockingId")]
+        public virtual List<StorageStocking> StorageStockings { get; set; }
+
+        [ForeignKey("StockingId")]
+        public virtual List<FabricStocking> FabricStockings { get; set; }
     }
 }
