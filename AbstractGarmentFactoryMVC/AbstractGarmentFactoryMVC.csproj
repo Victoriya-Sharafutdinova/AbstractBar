@@ -127,6 +127,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AddStorageController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\ExceptionController.cs" />
     <Compile Include="Controllers\FabricsController.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IndentsController.cs" />
     <Compile Include="Controllers\StockingsController.cs" />
+    <Compile Include="Controllers\StoragesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -215,6 +217,10 @@
     <Content Include="Views\FabricStockings\Index.cshtml" />
     <Content Include="Views\Exception\Index.cshtml" />
     <Content Include="Views\Fabricss\Index.cshtml" />
+    <Content Include="Views\Storages\List.cshtml" />
+    <Content Include="Views\Storages\Edit.cshtml" />
+    <Content Include="Views\Storages\Create.cshtml" />
+    <Content Include="Views\AddStorage\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
