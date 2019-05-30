@@ -1,5 +1,5 @@
-﻿using AbstractGarmentFactoryServiceDAL.Attributies;
-using AbstractGarmentFactoryServiceDAL.BindingModel;
+﻿using AbstractGarmentFactoryServiceDAL.BindingModel;
+using AbstractGarmentFactoryServiceDAL.Attributies;
 using AbstractGarmentFactoryServiceDAL.ViewModel;
 using System;
 using System.Collections.Generic;
