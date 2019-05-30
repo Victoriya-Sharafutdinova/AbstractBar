@@ -19,5 +19,7 @@ namespace AbstractGarmentFactoryMVC
 
         public static IMainService MainService { get; } = new MainServiceList();
 
+        public static IStorageService StorageService { get; } = new StorageServiceList();
+
     }
 }

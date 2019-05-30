@@ -24,7 +24,7 @@ namespace AbstractGarmentFactoryView
 
         private int? id;
 
-        private List<FabricStockingViewModel> cocktailIngredient;
+        private List<FabricStockingViewModel> fabricStocking;
 
         public FormFabric(IFabricService service)
         {
@@ -42,7 +42,7 @@ namespace AbstractGarmentFactoryView
                     {
                         textBoxName.Text = view.FabricName;
                         textBoxPrice.Text = view.Value.ToString();
-                        cocktailIngredient = view.FabricStocking;
+                        fabricStocking = view.FabricStocking;
                         LoadData();
                     }
                 }
@@ -53,7 +53,7 @@ namespace AbstractGarmentFactoryView
             }
             else
             {
-                cocktailIngredient = new List<FabricStockingViewModel>();
+                fabricStocking = new List<FabricStockingViewModel>();
             }
         }
 
@@ -61,10 +61,10 @@ namespace AbstractGarmentFactoryView
         {
             try
             {
-                if (cocktailIngredient != null)
+                if (fabricStocking != null)
                 {
                     dataGridView1.DataSource = null;
-                    dataGridView1.DataSource = cocktailIngredient;
+                    dataGridView1.DataSource = fabricStocking;
                     dataGridView1.Columns[0].Visible = false;
                     dataGridView1.Columns[1].Visible = false;
                     dataGridView1.Columns[2].Visible = false;
@@ -88,7 +88,7 @@ namespace AbstractGarmentFactoryView
                     {
                         form.Model.FabricId = id.Value;
                     }
-                    cocktailIngredient.Add(form.Model);
+                    fabricStocking.Add(form.Model);
                 }
                 LoadData();
             }
@@ -99,10 +99,10 @@ namespace AbstractGarmentFactoryView
             if (dataGridView1.SelectedRows.Count == 1)
             {
                 var form = Container.Resolve<FormFabricStocking>();
-                form.Model = cocktailIngredient[dataGridView1.SelectedRows[0].Cells[0].RowIndex];
+                form.Model = fabricStocking[dataGridView1.SelectedRows[0].Cells[0].RowIndex];
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    cocktailIngredient[dataGridView1.SelectedRows[0].Cells[0].RowIndex] = form.Model;
+                    fabricStocking[dataGridView1.SelectedRows[0].Cells[0].RowIndex] = form.Model;
                     LoadData();
                 }
             }
@@ -116,7 +116,7 @@ namespace AbstractGarmentFactoryView
                 {
                     try
                     {
-                        cocktailIngredient.RemoveAt(dataGridView1.SelectedRows[0].Cells[0].RowIndex);
+                        fabricStocking.RemoveAt(dataGridView1.SelectedRows[0].Cells[0].RowIndex);
                     }
                     catch (Exception ex)
                     {
@@ -144,22 +144,22 @@ namespace AbstractGarmentFactoryView
                 MessageBox.Show("Заполните цену", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (cocktailIngredient == null || cocktailIngredient.Count == 0)
+            if (fabricStocking == null || fabricStocking.Count == 0)
             {
                 MessageBox.Show("Заполните компоненты", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             try
             {
-                List<FabricStockingBindingModel> cocktailIngredientBM = new List<FabricStockingBindingModel>();
-                for (int i = 0; i < cocktailIngredient.Count; ++i)
+                List<FabricStockingBindingModel> fabricStockingBM = new List<FabricStockingBindingModel>();
+                for (int i = 0; i < fabricStocking.Count; ++i)
                 {
-                    cocktailIngredientBM.Add(new FabricStockingBindingModel
+                    fabricStockingBM.Add(new FabricStockingBindingModel
                     {
-                        Id = cocktailIngredient[i].Id,
-                        FabricId = cocktailIngredient[i].FabricId,
-                        StockingId = cocktailIngredient[i].StockingId,
-                        Amount = cocktailIngredient[i].Amount
+                        Id = fabricStocking[i].Id,
+                        FabricId = fabricStocking[i].FabricId,
+                        StockingId = fabricStocking[i].StockingId,
+                        Amount = fabricStocking[i].Amount
                     });
                 }
                 if (id.HasValue)
@@ -169,7 +169,7 @@ namespace AbstractGarmentFactoryView
                         Id = id.Value,
                         FabricName = textBoxName.Text,
                         Value = Convert.ToInt32(textBoxPrice.Text),
-                        FabricStocking = cocktailIngredientBM
+                        FabricStocking = fabricStockingBM
                     });
                 }
                 else
@@ -178,7 +178,7 @@ namespace AbstractGarmentFactoryView
                     {
                         FabricName = textBoxName.Text,
                         Value = Convert.ToInt32(textBoxPrice.Text),
-                        FabricStocking = cocktailIngredientBM
+                        FabricStocking = fabricStockingBM
                     });
                 }
                 MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
