@@ -6,14 +6,10 @@ using System.Threading.Tasks;
 
 namespace AbstractGarmentFactoryModel
 {
-    public enum IndentCondition
+    public class Storage
     {
-        Принят = 0,
+        public int Id { get; set; }
 
-        Выполняется = 1,
-
-        Готов = 2,
-
-        Оплачен = 3
+        public string StorageName { get; set; }
     }
 }

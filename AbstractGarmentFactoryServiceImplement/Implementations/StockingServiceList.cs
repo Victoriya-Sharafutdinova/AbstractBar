@@ -21,49 +21,37 @@ namespace AbstractGarmentFactoryServiceImplement.Implementations
 
         public List<StockingViewModel> GetList()
         {
-            List<StockingViewModel> result = new List<StockingViewModel>();
-            for (int i = 0; i < source.Stocking.Count; ++i)
+            List<StockingViewModel> result = source.Stocking.Select(rec => new StockingViewModel
             {
-                result.Add(new StockingViewModel
-                {
-                    Id = source.Stocking[i].Id,
-                    StockingName = source.Stocking[i].StockingName
-                });
-            }
-
+                Id = rec.Id,
+                StockingName = rec.StockingName
+            })
+            .ToList();
             return result;
         }
 
         public StockingViewModel GetElement(int id)
         {
-            for (int i = 0; i < source.Stocking.Count; ++i)
+            Stocking element = source.Stocking.FirstOrDefault(rec => rec.Id == id);
+            if (element != null)
             {
-                if (source.Stocking[i].Id == id)
+                return new StockingViewModel
                 {
-                    return new StockingViewModel
-                    {
-                        Id = source.Stocking[i].Id,
-                        StockingName = source.Stocking[i].StockingName
-                    };
-                }
+                    Id = element.Id,
+                    StockingName = element.StockingName
+                };
             }
             throw new Exception("Элемент не найден");
         }
 
         public void AddElement(StockingBindingModel model)
         {
-            int maxId = 0;
-            for (int i = 0; i < source.Stocking.Count; ++i)
+            Stocking element = source.Stocking.FirstOrDefault(rec => rec.StockingName == model.StockingName);
+            if (element != null)
             {
-                if (source.Stocking[i].Id > maxId)
-                {
-                    maxId = source.Stocking[i].Id;
-                }
-                if (source.Stocking[i].StockingName == model.StockingName)
-                {
-                    throw new Exception("Уже есть такой ингредиент");
-                }
+                throw new Exception("Уже есть компонент с таким названием");
             }
+            int maxId = source.Stocking.Count > 0 ? source.Stocking.Max(rec => rec.Id) : 0;
             source.Stocking.Add(new Stocking
             {
                 Id = maxId + 1,
@@ -73,35 +61,29 @@ namespace AbstractGarmentFactoryServiceImplement.Implementations
 
         public void UpdElement(StockingBindingModel model)
         {
-            int index = -1;
-            for (int i = 0; i < source.Stocking.Count; ++i)
+            Stocking element = source.Stocking.FirstOrDefault(rec => rec.StockingName == model.StockingName && rec.Id != model.Id);
+            if (element != null)
             {
-                if (source.Stocking[i].Id == model.Id)
-                {
-                    index = i;
-                }
-                if (source.Stocking[i].StockingName == model.StockingName && source.Stocking[i].Id != model.Id)
-                {
-                    throw new Exception("Уже есть такой ингредиент");
-                }
+                throw new Exception("Уже есть компонент с таким названием");
             }
-            if (index == -1)
+            element = source.Stocking.FirstOrDefault(rec => rec.Id == model.Id); if (element == null)
             {
                 throw new Exception("Элемент не найден");
             }
-            source.Stocking[index].StockingName = model.StockingName;
+            element.StockingName = model.StockingName;
         }
+
         public void DelElement(int id)
         {
-            for (int i = 0; i < source.Stocking.Count; ++i)
+            Stocking element = source.Stocking.FirstOrDefault(rec => rec.Id == id);
+            if (element != null)
             {
-                if (source.Stocking[i].Id == id)
-                {
-                    source.Stocking.RemoveAt(i);
-                    return;
-                }
+                source.Stocking.Remove(element);
             }
-            throw new Exception("Элемент не найден");
+            else
+            {
+                throw new Exception("Элемент не найден");
+            }
         }
     }
 }

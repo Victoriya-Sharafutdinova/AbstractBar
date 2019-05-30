@@ -21,239 +21,156 @@ namespace AbstractGarmentFactoryServiceImplement.Implementations
 
         public List<FabricViewModel> GetList()
         {
-            List<FabricViewModel> result = new List<FabricViewModel>();
-            for (int i = 0; i < source.Fabric.Count; ++i)
+            List<FabricViewModel> result = source.Fabric.Select(rec => new FabricViewModel
             {
-              
-                List<FabricStockingViewModel> fabricStocking = new List<FabricStockingViewModel>();
-                for (int j = 0; j < source.FabricStocking.Count; ++j)
-                {
-                    if (source.FabricStocking[j].FabricId == source.Fabric[i].Id)
+                Id = rec.Id,
+                FabricName = rec.FabricName,
+                Value = rec.Value,
+                FabricStocking = source.FabricStocking
+                    .Where(recPC => recPC.FabricId == rec.Id)
+                    .Select(recPC => new FabricStockingViewModel
                     {
-                        string stockingName = string.Empty;
-                        for (int k = 0; k < source.Stocking.Count; ++k)
-                        {
-                            if (source.FabricStocking[j].StockingId == source.Stocking[k].Id)
-                            {
-                                stockingName = source.Stocking[k].StockingName;
-                                break;
-                            }
-                        }
-                        fabricStocking.Add(new FabricStockingViewModel
-                        {
-                            Id = source.FabricStocking[j].Id,
-                            FabricId = source.FabricStocking[j].FabricId,
-                            StockingId = source.FabricStocking[j].StockingId,
-                            StockingName = stockingName,
-                            Amount = source.FabricStocking[j].Amount
-                        });
-                    }
-                }
-                result.Add(new FabricViewModel
-                {
-                    Id = source.Fabric[i].Id,
-                    FabricName = source.Fabric[i].FabricName,
-                    Value = source.Fabric[i].Value,
-                    FabricStocking = fabricStocking
-                });
-            }
+                        Id = recPC.Id,
+                        FabricId = recPC.FabricId,
+                        StockingId = recPC.StockingId,
+                        StockingName = source.Stocking.FirstOrDefault(recC => recC.Id == recPC.StockingId)?.StockingName,
+                        Amount = recPC.Amount
+                    })
+                    .ToList()
+            })
+            .ToList();
             return result;
         }
 
         public FabricViewModel GetElement(int id)
         {
-            for (int i = 0; i < source.Fabric.Count; ++i)
-            {                 
-                List<FabricStockingViewModel> fabricStocking = new List<FabricStockingViewModel>();
-                for (int j = 0; j < source.FabricStocking.Count; ++j)
+            Fabric element = source.Fabric.FirstOrDefault(rec => rec.Id == id);
+            if (element != null)
+            {
+                return new FabricViewModel
                 {
-                    if (source.FabricStocking[j].FabricId == source.Fabric[i].Id)
-                    {
-                        string stockingName = string.Empty;
-                        for (int k = 0; k < source.Stocking.Count; ++k)
+                    Id = element.Id,
+                    FabricName = element.FabricName,
+                    Value = element.Value,
+                    FabricStocking = source.FabricStocking
+                        .Where(recPC => recPC.FabricId == element.Id)
+                        .Select(recPC => new FabricStockingViewModel
                         {
-                            if (source.FabricStocking[j].StockingId == source.Stocking[k].Id)
-                            {
-                                stockingName = source.Stocking[k].StockingName;
-                                break;
-                            }
-                        }
-                        fabricStocking.Add(new FabricStockingViewModel
-                        {
-                            Id = source.FabricStocking[j].Id,
-                            FabricId = source.FabricStocking[j].FabricId,
-                            StockingId = source.FabricStocking[j].StockingId,
-                            StockingName = stockingName,
-                            Amount = source.FabricStocking[j].Amount
-                        });
-                    }
-                }
-                if (source.Fabric[i].Id == id)
-                {
-                    return new FabricViewModel
-                    {
-                        Id = source.Fabric[i].Id,
-                        FabricName = source.Fabric[i].FabricName,
-                        Value = source.Fabric[i].Value,
-                        FabricStocking = fabricStocking
-                    };
-                }
+                            Id = recPC.Id,
+                            FabricId = recPC.FabricId,
+                            StockingId = recPC.StockingId,
+                            StockingName = source.Stocking.FirstOrDefault(recC => recC.Id == recPC.StockingId)?.StockingName,
+                            Amount = recPC.Amount
+                        })
+                        .ToList()
+                };
             }
             throw new Exception("Элемент не найден");
         }
 
         public void AddElement(FabricBindingModel model)
         {
-            int maxId = 0; for (int i = 0; i < source.Fabric.Count; ++i)
+            Fabric element = source.Fabric.FirstOrDefault(rec => rec.FabricName == model.FabricName);
+            if (element != null)
             {
-                if (source.Fabric[i].Id > maxId)
-                {
-                    maxId = source.Fabric[i].Id;
-                }
-                if (source.Fabric[i].FabricName == model.FabricName)
-                {
-                    throw new Exception("Уже есть изделие с таким названием");
-                }
+                throw new Exception("Уже есть изделие с таким названием");
             }
+            int maxId = source.Fabric.Count > 0 ? source.Fabric.Max(rec => rec.Id) : 0;
             source.Fabric.Add(new Fabric
             {
                 Id = maxId + 1,
                 FabricName = model.FabricName,
                 Value = model.Value
             });
-            // компоненты для изделия             
-            int maxPCId = 0;
-            for (int i = 0; i < source.FabricStocking.Count; ++i)
-            {
-                if (source.FabricStocking[i].Id > maxPCId)
+            // компоненты для изделия        
+            int maxPCId = source.FabricStocking.Count > 0 ? source.FabricStocking.Max(rec => rec.Id) : 0;
+            // убираем дубли по компонентам         
+            var GroupStocking = model.FabricStocking
+                .GroupBy(rec => rec.StockingId)
+                .Select(rec => new
                 {
-                    maxPCId = source.FabricStocking[i].Id;
-                }
-            }
-            // убираем дубли по компонентам             
-            for (int i = 0; i < model.FabricStocking.Count; ++i)
-            {
-                for (int j = 1; j < model.FabricStocking.Count; ++j)
-                {
-                    if (model.FabricStocking[i].StockingId == model.FabricStocking[j].StockingId)
-                    {
-                        model.FabricStocking[i].Amount += model.FabricStocking[j].Amount;
-                        model.FabricStocking.RemoveAt(j--);
-                    }
-                }
-            }
+                    StockingId = rec.Key,
+                    Amount = rec.Sum(r => r.Amount)
+                });
             // добавляем компоненты             
-            for (int i = 0; i < model.FabricStocking.Count; ++i)
+            foreach (var groupStocking in GroupStocking)
             {
                 source.FabricStocking.Add(new FabricStocking
                 {
                     Id = ++maxPCId,
                     FabricId = maxId + 1,
-                    StockingId = model.FabricStocking[i].StockingId,
-                    Amount = model.FabricStocking[i].Amount
+                    StockingId = groupStocking.StockingId,
+                    Amount = groupStocking.Amount
                 });
             }
         }
 
         public void UpdElement(FabricBindingModel model)
         {
-            int index = -1; for (int i = 0; i < source.Fabric.Count; ++i)
+            Fabric element = source.Fabric.FirstOrDefault(rec => rec.FabricName == model.FabricName && rec.Id != model.Id);
+            if (element != null)
             {
-                if (source.Fabric[i].Id == model.Id)
-                {
-                    index = i;
-                }
-                if (source.Fabric[i].FabricName == model.FabricName && source.Fabric[i].Id != model.Id)
-                {
-                    throw new Exception("Уже есть изделие с таким названием");
-                }
+                throw new Exception("Уже есть изделие с таким названием");
             }
-            if (index == -1)
+            element = source.Fabric.FirstOrDefault(rec => rec.Id == model.Id);
+            if (element == null)
             {
                 throw new Exception("Элемент не найден");
             }
-            source.Fabric[index].FabricName = model.FabricName;
-            source.Fabric[index].Value = model.Value;
-            int maxPCId = 0;
-            for (int i = 0; i < source.FabricStocking.Count; ++i)
+            element.FabricName = model.FabricName;
+            element.Value = model.Value;
+
+            int maxPCId = source.FabricStocking.Count > 0 ? source.FabricStocking.Max(rec => rec.Id) : 0;
+            // обновляем существуюущие компоненты    
+            var compIds = model.FabricStocking.Select(rec => rec.StockingId).Distinct();
+            var UpdateStocking = source.FabricStocking.Where(rec => rec.FabricId == model.Id && compIds.Contains(rec.StockingId));
+            foreach (var updateStocking in UpdateStocking)
             {
-                if (source.FabricStocking[i].Id > maxPCId)
-                {
-                    maxPCId = source.FabricStocking[i].Id;
-                }
+                updateStocking.Amount = model.FabricStocking.FirstOrDefault(rec => rec.Id == updateStocking.Id).Amount;
             }
-            // обновляем существуюущие компоненты 
-            for (int i = 0; i < source.FabricStocking.Count; ++i)
-            {
-                if (source.FabricStocking[i].FabricId == model.Id)
+            source.FabricStocking.RemoveAll(rec => rec.FabricId == model.Id && !compIds.Contains(rec.StockingId));
+            // новые записи         
+            var GroupStocking = model.FabricStocking
+                .Where(rec => rec.Id == 0)
+                .GroupBy(rec => rec.StockingId)
+                .Select(rec => new
                 {
-                    bool flag = true;
-                    for (int j = 0; j < model.FabricStocking.Count; ++j)
-                    {
-                        // если встретили, то изменяем количество                         
-                        if (source.FabricStocking[i].Id == model.FabricStocking[j].Id)
-                        {
-                            source.FabricStocking[i].Amount = model.FabricStocking[j].Amount;
-                            flag = false;
-                            break;
-                        }
-                    }
-                    // если не встретили, то удаляем                     
-                    if (flag)
-                    {
-                        source.FabricStocking.RemoveAt(i--);
-                    }
+                    StockingId = rec.Key,
+                    Amount = rec.Sum(r => r.Amount)
+                });
+            foreach (var groupStocking in GroupStocking)
+            {
+                FabricStocking elementPC = source.FabricStocking.FirstOrDefault(rec => rec.FabricId == model.Id && rec.StockingId == groupStocking.StockingId);
+                if (elementPC != null)
+                {
+                    elementPC.Amount += groupStocking.Amount;
                 }
-            }
-            // новые записи             
-            for (int i = 0; i < model.FabricStocking.Count; ++i)
-            {
-                if (model.FabricStocking[i].Id == 0)
+                else
                 {
-                    // ищем дубли                     
-                    for (int j = 0; j < source.FabricStocking.Count; ++j)
+                    source.FabricStocking.Add(new FabricStocking
                     {
-                        if (source.FabricStocking[j].FabricId == model.Id && source.FabricStocking[j].StockingId == model.FabricStocking[i].StockingId)
-                        {
-                            source.FabricStocking[j].Amount += model.FabricStocking[i].Amount;
-                            model.FabricStocking[i].Id = source.FabricStocking[j].Id;
-                            break;
-                        }
-                    }
-                    // если не нашли дубли, то новая запись                   
-                    if (model.FabricStocking[i].Id == 0)
-                    {
-                        source.FabricStocking.Add(new FabricStocking
-                        {
-                            Id = ++maxPCId,
-                            FabricId = model.Id,
-                            StockingId = model.FabricStocking[i].StockingId,
-                            Amount = model.FabricStocking[i].Amount
-                        });
-                    }
+                        Id = ++maxPCId,
+                        FabricId = model.Id,
+                        StockingId = groupStocking.StockingId,
+                        Amount = groupStocking.Amount
+                    });
                 }
             }
         }
 
         public void DelElement(int id)
         {
-            // удаяем записи по компонентам при удалении изделия    
-            for (int i = 0; i < source.FabricStocking.Count; ++i)
+            Fabric element = source.Fabric.FirstOrDefault(rec => rec.Id == id);
+            if (element != null)
             {
-                if (source.FabricStocking[i].FabricId == id)
-                {
-                    source.FabricStocking.RemoveAt(i--);
-                }
+                // удаяем записи по компонентам при удалении изделия 
+                source.FabricStocking.RemoveAll(rec => rec.FabricId == id);
+                source.Fabric.Remove(element);
             }
-            for (int i = 0; i < source.Fabric.Count; ++i)
+            else
             {
-                if (source.Fabric[i].Id == id)
-                {
-                    source.Fabric.RemoveAt(i);
-                    return;
-                }
+                throw new Exception("Элемент не найден");
             }
-            throw new Exception("Элемент не найден");
         }
     }
 }

@@ -51,6 +51,8 @@
     <Compile Include="Indent.cs" />
     <Compile Include="IndentStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Storage.cs" />
+    <Compile Include="StorageStocking.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

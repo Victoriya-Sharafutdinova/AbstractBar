@@ -21,54 +21,27 @@ namespace AbstractGarmentFactoryServiceImplement.Implementations
 
         public List<IndentViewModel> GetList()
         {
-            List<IndentViewModel> result = new List<IndentViewModel>();
-            for (int i = 0; i < source.Indents.Count; ++i)
-            {
-                string customerFIO = string.Empty;
-                for (int j = 0; j < source.Customer.Count; ++j)
+            List<IndentViewModel> result = source.Indents
+                .Select(rec => new IndentViewModel
                 {
-                    if (source.Customer[j].Id == source.Indents[i].CustomerId)
-                    {
-                        customerFIO = source.Customer[j].CustomerFIO;
-                        break;
-                    }
-                }
-                string fabricName = string.Empty;
-                for (int j = 0; j < source.Fabric.Count; ++j)
-                {
-                    if (source.Fabric[j].Id == source.Indents[i].FabricId)
-                    {
-                        fabricName = source.Fabric[j].FabricName;
-                        break;
-                    }
-                }
-                result.Add(new IndentViewModel
-                {
-                    Id = source.Indents[i].Id,
-                    CustomerId = source.Indents[i].CustomerId,
-                    CustomerFIO = customerFIO,
-                    FabricId = source.Indents[i].FabricId,
-                    FabricName = fabricName,
-                    Amount = source.Indents[i].Amount,
-                    Total = source.Indents[i].Total,
-                    DateCreate = source.Indents[i].DateCreate.ToLongDateString(),
-                    DateImplement = source.Indents[i].DateImplement?.ToLongDateString(),
-                    Condition = source.Indents[i].Condition.ToString()
-                });
-            }
+                    Id = rec.Id,
+                    CustomerId = rec.CustomerId,
+                    FabricId = rec.FabricId,
+                    DateCreate = rec.DateCreate.ToLongDateString(),
+                    DateImplement = rec.DateImplement?.ToLongDateString(),
+                    Condition = rec.Condition.ToString(),
+                    Amount = rec.Amount,
+                    Total = rec.Total,
+                    CustomerFIO = source.Customer.FirstOrDefault(recC => recC.Id == rec.CustomerId)?.CustomerFIO,
+                    FabricName = source.Fabric.FirstOrDefault(recP => recP.Id == rec.FabricId)?.FabricName,
+                })
+                .ToList();
             return result;
         }
 
         public void CreateIndent(IndentBindingModel model)
         {
-            int maxId = 0;
-            for (int i = 0; i < source.Indents.Count; ++i)
-            {
-                if (source.Indents[i].Id > maxId)
-                {
-                    maxId = source.Customer[i].Id;
-                }
-            }
+            int maxId = source.Indents.Count > 0 ? source.Indents.Max(rec => rec.Id) : 0;
             source.Indents.Add(new Indent
             {
                 Id = maxId + 1,
@@ -77,74 +50,105 @@ namespace AbstractGarmentFactoryServiceImplement.Implementations
                 DateCreate = DateTime.Now,
                 Amount = model.Amount,
                 Total = model.Total,
-                Condition = IndentStatus.Принят
+                Condition = IndentCondition.Принят
             });
         }
 
         public void TakeIndentInWork(IndentBindingModel model)
         {
-            int index = -1;
-            for (int i = 0; i < source.Indents.Count; ++i)
-            {
-                if (source.Indents[i].Id == model.Id)
-                {
-                    index = i;
-                    break;
-                }
-            }
-            if (index == -1)
+            Indent element = source.Indents.FirstOrDefault(rec => rec.Id == model.Id);
+            if (element == null)
             {
                 throw new Exception("Элемент не найден");
             }
-            if (source.Indents[index].Condition != IndentStatus.Принят)
+            if (element.Condition != IndentCondition.Принят)
             {
                 throw new Exception("Заказ не в статусе \"Принят\"");
             }
-            source.Indents[index].DateImplement = DateTime.Now;
-            source.Indents[index].Condition = IndentStatus.Выполняется;
+            // смотрим по количеству компонентов на складах    
+            var fabricStockings = source.FabricStocking.Where(rec => rec.FabricId == element.FabricId);
+            foreach (var fabricStocking in fabricStockings)
+            {
+                int amountOnStorage = source.StorageStocking
+                    .Where(rec => rec.StockingId == fabricStocking.StockingId)
+                    .Sum(rec => rec.Amount);
+                if (amountOnStorage < fabricStocking.Amount * element.Amount)
+                {
+                    var stockingName = source.Stocking.FirstOrDefault(rec => rec.Id == fabricStocking.StockingId);
+                    throw new Exception("Не достаточно компонента " + stockingName?.StockingName + " требуется " + (fabricStocking.Amount * element.Amount) + ", в наличии " + amountOnStorage);
+                }
+            }
+            // списываем   
+            foreach (var fabricStocking in fabricStockings)
+            {
+                int AmountOnStorage = fabricStocking.Amount * element.Amount;
+                var StorageStocking = source.StorageStocking
+                    .Where(rec => rec.StockingId == fabricStocking.StockingId);
+                foreach (var storageStocking in StorageStocking)
+                {
+                    // компонентов на одном слкаде может не хватать 
+                    if (storageStocking.Amount >= AmountOnStorage)
+                    {
+                        storageStocking.Amount -= AmountOnStorage;
+                        break;
+                    }
+                    else
+                    {
+                        AmountOnStorage -= storageStocking.Amount;
+                        storageStocking.Amount = 0;
+                    }
+                }
+            }
+            element.DateImplement = DateTime.Now;
+            element.Condition = IndentCondition.Выполняется;
         }
 
         public void FinishIndent(IndentBindingModel model)
         {
-            int index = -1;
-            for (int i = 0; i < source.Indents.Count; ++i)
-            {
-                if (source.Customer[i].Id == model.Id)
-                {
-                    index = i;
-                    break;
-                }
-            }
-            if (index == -1)
+            Indent element = source.Indents.FirstOrDefault(rec => rec.Id == model.Id);
+            if (element == null)
             {
                 throw new Exception("Элемент не найден");
             }
-            if (source.Indents[index].Condition != IndentStatus.Выполняется)
+            if (element.Condition != IndentCondition.Выполняется)
             {
                 throw new Exception("Заказ не в статусе \"Выполняется\"");
             }
-            source.Indents[index].Condition = IndentStatus.Готов;
+            element.Condition = IndentCondition.Готов;
         }
 
         public void PayIndent(IndentBindingModel model)
         {
-            int index = -1; for (int i = 0; i < source.Indents.Count; ++i)
-            {
-                if (source.Customer[i].Id == model.Id)
-                {
-                    index = i;
-                    break;
-                }
-            }
-            if (index == -1)
+            Indent element = source.Indents.FirstOrDefault(rec => rec.Id == model.Id);
+            if (element == null)
             {
                 throw new Exception("Элемент не найден");
             }
-            if (source.Indents[index].Condition != IndentStatus.Готов)
+            if (element.Condition != IndentCondition.Готов)
             {
                 throw new Exception("Заказ не в статусе \"Готов\"");
             }
-            source.Indents[index].Condition = IndentStatus.Оплачен;
+            element.Condition = IndentCondition.Оплачен;
+        }
+
+        public void PutStockingOnStorage(StorageStockingBindingModel model)
+        {
+            StorageStocking element = source.StorageStocking.FirstOrDefault(rec => rec.StorageId == model.StorageId && rec.StockingId == model.StockingId);
+            if (element != null)
+            {
+                element.Amount += model.Amount;
+            }
+            else
+            {
+                int maxId = source.StorageStocking.Count > 0 ? source.StorageStocking.Max(rec => rec.Id) : 0;
+                source.StorageStocking.Add(new StorageStocking
+                {
+                    Id = ++maxId,
+                    StorageId = model.StorageId,
+                    StockingId = model.StockingId,
+                    Amount = model.Amount
+                });
+            }
         }
     }
 }
