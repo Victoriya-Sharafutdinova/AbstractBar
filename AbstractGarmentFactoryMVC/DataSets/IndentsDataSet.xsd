@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="IndentsDataSet" targetNamespace="http://tempuri.org/IndentsDataSet.xsd" xmlns:mstns="http://tempuri.org/IndentsDataSet.xsd" xmlns="http://tempuri.org/IndentsDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="AbstractDatabaseConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="AbstractDatabaseConnectionString (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.AbstractDatabaseConnectionString.ConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="IndentsDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="IndentsDataSet" msprop:Generator_UserDSName="IndentsDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Indents" msprop:Generator_TableClassName="IndentsDataTable" msprop:Generator_TableVarName="tableIndents" msprop:Generator_TablePropName="Indents" msprop:Generator_RowDeletingName="IndentsRowDeleting" msprop:Generator_RowChangingName="IndentsRowChanging" msprop:Generator_RowEvHandlerName="IndentsRowChangeEventHandler" msprop:Generator_RowDeletedName="IndentsRowDeleted" msprop:Generator_UserTableName="Indents" msprop:Generator_RowChangedName="IndentsRowChanged" msprop:Generator_RowEvArgName="IndentsRowChangeEvent" msprop:Generator_RowClassName="IndentsRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Id" msdata:ReadOnly="true" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:int" />
+              <xs:element name="CustomerId" msprop:Generator_ColumnVarNameInTable="columnCustomerId" msprop:Generator_ColumnPropNameInRow="CustomerId" msprop:Generator_ColumnPropNameInTable="CustomerIdColumn" msprop:Generator_UserColumnName="CustomerId" type="xs:int" />
+              <xs:element name="FabricId" msprop:Generator_ColumnVarNameInTable="columnFabricId" msprop:Generator_ColumnPropNameInRow="FabricId" msprop:Generator_ColumnPropNameInTable="FabricIdColumn" msprop:Generator_UserColumnName="FabricId" type="xs:int" />
+              <xs:element name="Amount" msprop:Generator_ColumnVarNameInTable="columnAmount" msprop:Generator_ColumnPropNameInRow="Amount" msprop:Generator_ColumnPropNameInTable="AmountColumn" msprop:Generator_UserColumnName="Amount" type="xs:int" />
+              <xs:element name="Total" msprop:Generator_ColumnVarNameInTable="columnTotal" msprop:Generator_ColumnPropNameInRow="Total" msprop:Generator_ColumnPropNameInTable="TotalColumn" msprop:Generator_UserColumnName="Total" type="xs:decimal" />
+              <xs:element name="Condition" msprop:Generator_ColumnVarNameInTable="columnCondition" msprop:Generator_ColumnPropNameInRow="Condition" msprop:Generator_ColumnPropNameInTable="ConditionColumn" msprop:Generator_UserColumnName="Condition" type="xs:int" />
+              <xs:element name="DateCreate" msprop:Generator_ColumnVarNameInTable="columnDateCreate" msprop:Generator_ColumnPropNameInRow="DateCreate" msprop:Generator_ColumnPropNameInTable="DateCreateColumn" msprop:Generator_UserColumnName="DateCreate" type="xs:dateTime" />
+              <xs:element name="DateImplement" msprop:Generator_ColumnVarNameInTable="columnDateImplement" msprop:Generator_ColumnPropNameInRow="DateImplement" msprop:Generator_ColumnPropNameInTable="DateImplementColumn" msprop:Generator_UserColumnName="DateImplement" type="xs:dateTime" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:Indents" />
+      <xs:field xpath="mstns:Id" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

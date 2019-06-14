@@ -165,6 +165,12 @@
     <Compile Include="FormStorages.Designer.cs">
       <DependentUpon>FormStorages.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormStoragesLoad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormStoragesLoad.Designer.cs">
+      <DependentUpon>FormStoragesLoad.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />

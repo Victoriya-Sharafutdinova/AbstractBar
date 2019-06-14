@@ -23,5 +23,7 @@ namespace AbstractGarmentFactoryMVC
 
         public static IStorageService StorageService { get; } = new StorageServiceDB(DbContext);
 
+        public static IReportService ReportService { get; } = new ReportServiceDB(DbContext);
+
     }
 }
