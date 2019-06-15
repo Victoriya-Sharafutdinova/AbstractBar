@@ -66,6 +66,7 @@
             // 
             // dataGridView
             // 
+            this.dataGridView.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView.Location = new System.Drawing.Point(12, 24);
             this.dataGridView.Name = "dataGridView";
@@ -105,7 +106,7 @@
             this.Controls.Add(this.label1);
             this.Name = "FormStorage";
             this.Text = "Склад";
-            this.Load += new System.EventHandler(this.FormStock_Load);
+            this.Load += new System.EventHandler(this.FormStorage_Load);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);

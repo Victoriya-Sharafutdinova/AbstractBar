@@ -10,34 +10,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Unity;
+
 
 namespace AbstractGarmentFactoryView
 {
     public partial class FormFabric : Form
     {
-        [Dependency] public new IUnityContainer Container { get; set; }
-
-        public int Id { set { id = value; } }
-
-        private readonly IFabricService service;
+        public int Id
+        {
+            set
+            {
+                id = value;
+            }
+        }
 
         private int? id;
 
         private List<FabricStockingViewModel> fabricStocking;
 
-        public FormFabric(IFabricService service)
+        public FormFabric()
         {
             InitializeComponent();
-            this.service = service;
         }
 
-        private void FormProduct_Load(object sender, EventArgs e)
+        private void FormFabric_Load(object sender, EventArgs e)
         {
             if (id.HasValue)
-            { try
+            {
+                try
                 {
-                    FabricViewModel view = service.GetElement(id.Value);
+                    FabricViewModel view = APICustomer.GetRequest<FabricViewModel>("api/Fabric/Get/" + id.Value); 
                     if (view != null)
                     {
                         textBoxName.Text = view.FabricName;
@@ -51,7 +53,7 @@ namespace AbstractGarmentFactoryView
                     MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            else
+            else  
             {
                 fabricStocking = new List<FabricStockingViewModel>();
             }
@@ -79,7 +81,7 @@ namespace AbstractGarmentFactoryView
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormFabricStocking>();
+            var form = new FormFabricStocking();
             if (form.ShowDialog() == DialogResult.OK)
             {
                 if (form.Model != null)
@@ -164,7 +166,7 @@ namespace AbstractGarmentFactoryView
                 }
                 if (id.HasValue)
                 {
-                    service.UpdElement(new FabricBindingModel
+                    APICustomer.PostRequest<FabricBindingModel, bool>("api/Fabric/UpdElement", new FabricBindingModel
                     {
                         Id = id.Value,
                         FabricName = textBoxName.Text,
@@ -174,7 +176,7 @@ namespace AbstractGarmentFactoryView
                 }
                 else
                 {
-                    service.AddElement(new FabricBindingModel
+                    APICustomer.PostRequest<FabricBindingModel, bool>("api/Fabric/AddElement", new FabricBindingModel
                     {
                         FabricName = textBoxName.Text,
                         Value = Convert.ToInt32(textBoxPrice.Text),
