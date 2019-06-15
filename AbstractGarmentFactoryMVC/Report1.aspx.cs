@@ -75,123 +75,6 @@ namespace ReportsWeb.Report
                     .ToList();
         }
 
-     /*   public void SaveCustomerIndents(ReportBindingModel model)
-        {
-            //из ресрусов получаем шрифт для кирилицы      
-            if (!File.Exists("TIMCYR.TTF"))
-            {
-                File.WriteAllBytes("TIMCYR.TTF", Properties.Resources.TIMCYR);
-            }
-            //открываем файл для работы  
-            FileStream fs = new FileStream(model.FileName, FileMode.OpenOrCreate, FileAccess.Write);
-            //создаем документ, задаем границы, связываем документ и поток 
-            iTextSharp.text.Document doc = new iTextSharp.text.Document();
-            doc.SetMargins(0.5f, 0.5f, 0.5f, 0.5f);
-            PdfWriter writer = PdfWriter.GetInstance(doc, fs);
-
-            doc.Open();
-            BaseFont baseFont = BaseFont.CreateFont("TIMCYR.TTF", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-
-            //вставляем заголовок   
-            var phraseTitle = new Phrase("Заказы клиентов",
-            new iTextSharp.text.Font(baseFont, 16, iTextSharp.text.Font.BOLD));
-            iTextSharp.text.Paragraph paragraph = new iTextSharp.text.Paragraph(phraseTitle)
-            {
-                Alignment = Element.ALIGN_CENTER,
-                SpacingAfter = 12
-            };
-            doc.Add(paragraph);
-
-            var phrasePeriod = new Phrase("c " + model.DateFrom.Value.ToShortDateString() + " по "
-                + model.DateTo.Value.ToShortDateString(),
-                new iTextSharp.text.Font(baseFont, 14, iTextSharp.text.Font.BOLD));
-            paragraph = new iTextSharp.text.Paragraph(phrasePeriod)
-            {
-                Alignment = Element.ALIGN_CENTER,
-                SpacingAfter = 12
-            };
-            doc.Add(paragraph);
-
-            //вставляем таблицу, задаем количество столбцов, и ширину колонок   
-            PdfPTable table = new PdfPTable(6)
-            {
-                TotalWidth = 800F
-            };
-            table.SetTotalWidth(new float[]
-            {
-                160, 140, 160, 100, 100, 140
-            });
-            //вставляем шапку     
-            PdfPCell cell = new PdfPCell();
-            var fontForCellBold = new iTextSharp.text.Font(baseFont, 10, iTextSharp.text.Font.BOLD);
-            table.AddCell(new PdfPCell(new Phrase("ФИО клиента", fontForCellBold))
-            {
-                HorizontalAlignment = Element.ALIGN_CENTER
-            });
-            table.AddCell(new PdfPCell(new Phrase("Дата создания", fontForCellBold))
-            {
-                HorizontalAlignment = Element.ALIGN_CENTER
-            });
-            table.AddCell(new PdfPCell(new Phrase("Изделие", fontForCellBold))
-            {
-                HorizontalAlignment = Element.ALIGN_CENTER
-            });
-            table.AddCell(new PdfPCell(new Phrase("Количество", fontForCellBold))
-            {
-                HorizontalAlignment = Element.ALIGN_CENTER
-            });
-            table.AddCell(new PdfPCell(new Phrase("Сумма", fontForCellBold))
-            {
-                HorizontalAlignment = Element.ALIGN_CENTER
-            });
-            table.AddCell(new PdfPCell(new Phrase("Статус", fontForCellBold))
-            {
-                HorizontalAlignment = Element.ALIGN_CENTER
-            });
-            //заполняем таблицу          
-            var list = GetCustomerIndents(model);
-            var fontForCells = new iTextSharp.text.Font(baseFont, 10);
-            for (int i = 0; i < list.Count; i++)
-            {
-                cell = new PdfPCell(new Phrase(list[i].CustomerName, fontForCells));
-                table.AddCell(cell);
-                cell = new PdfPCell(new Phrase(list[i].DateCreate, fontForCells));
-                table.AddCell(cell);
-                cell = new PdfPCell(new Phrase(list[i].FabricName, fontForCells));
-                table.AddCell(cell);
-                cell = new PdfPCell(new Phrase(list[i].Amount.ToString(), fontForCells));
-                cell.HorizontalAlignment = Element.ALIGN_RIGHT;
-                table.AddCell(cell);
-                cell = new PdfPCell(new Phrase(list[i].Total.ToString(), fontForCells));
-                cell.HorizontalAlignment = Element.ALIGN_RIGHT; table.AddCell(cell);
-                cell = new PdfPCell(new Phrase(list[i].Condition, fontForCells));
-                table.AddCell(cell);
-            }
-            //вставляем итого      
-            cell = new PdfPCell(new Phrase("Итого:", fontForCellBold))
-            {
-                HorizontalAlignment = Element.ALIGN_RIGHT,
-                Colspan = 4,
-                Border = 0
-            };
-            table.AddCell(cell);
-            cell = new PdfPCell(new Phrase(list.Sum(rec => rec.Total)
-                .ToString(), fontForCellBold))
-            {
-                HorizontalAlignment = Element.ALIGN_RIGHT,
-                Border = 0
-            };
-            table.AddCell(cell);
-            cell = new PdfPCell(new Phrase("", fontForCellBold))
-            {
-                Border = 0
-            };
-            table.AddCell(cell);
-            //вставляем таблицу          
-            doc.Add(table);
-
-            doc.Close();
-        }*/
 
         protected void Export_Click(object sender, EventArgs e)
         {
@@ -221,13 +104,24 @@ namespace ReportsWeb.Report
 
         protected void SelectPeriod_Click(object sender, EventArgs e)
         {
+            DataTable people = null;
+            GridView1.DataSource = null;
+
             LoadDataTableSelectPeriod();
+            
+            people = (DataTable)Session["people"];
+            people = LoadDataTableSelectPeriod();
+            DataView peopleDataView = people.DefaultView;
+           
+            GridView1.DataSource = peopleDataView;
+            peopleDataView.AllowDelete = true;
+            GridView1.DataBind();
         }
 
         private DataTable LoadDataTableSelectPeriod()
         {
-            //DateTime DateFrom = Calendar1.SelectedDate.ToLocalTime();
-            //DateTime DateTo = Calendar2.SelectedDate.ToLocalTime();
+            DateTime DateFrom = Calendar1.SelectedDate;
+            DateTime DateTo = Calendar2.SelectedDate.ToLocalTime();
             string conSTR = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\ВИКА\\AbstractDatabase.mdf;Integrated Security=True;Connect Timeout=30";
             string query = "SELECT c.CustomerFIO, f.FabricName, " +
                 "i.Amount, i.Total, i.Condition, i.DateCreate, i.DateImplement " +
@@ -235,15 +129,15 @@ namespace ReportsWeb.Report
                 "JOIN AbstractDatabase.dbo.[Customers] c " +
                 "ON i.CustomerId = c.Id " +
                 "JOIN AbstractDatabase.dbo.[Fabrics] f " +
-                "ON f.Id = i.FabricId "/* +
-                "WHERE i.DateCreate BETWEEN 24.05.2019 00:00:00 AND 12.06.2019 00:00:00"*/;
+                "ON f.Id = i.FabricId " +
+                "WHERE i.DateCreate BETWEEN N'" + DateFrom.ToString("yyyy-MM-dd HH:mm:ss") + "' AND N'" + DateTo.ToString("yyyy-MM-dd HH:mm:ss") +"'";
 
             using (SqlConnection sqlConn = new SqlConnection(conSTR))
             using (SqlCommand cmd = new SqlCommand(query, sqlConn))
             {
 
                 sqlConn.Open();
-                DataTable people = (DataTable)Session["people"];
+                DataTable people = new DataTable() ;
                 people.Load(cmd.ExecuteReader());
                 return people;
             }
@@ -286,9 +180,11 @@ namespace ReportsWeb.Report
 
         private void SetDataBinding()
         {
-            DataTable people = (DataTable)Session["people"];
+            DataTable people = null;
+             people = (DataTable)Session["people"];
             DataView peopleDataView = people.DefaultView;
-
+            this.GridView1.DataSource = null;
+           
             this.GridView1.DataSource = peopleDataView;
             peopleDataView.AllowDelete = true;
             this.GridView1.DataBind();

@@ -20,10 +20,10 @@
             <HeaderStyle BackColor="#D54A06" Font-Bold="True" ForeColor="White"/>
         </asp:GridView>
         <br />
-    <%--    <asp:Calendar ID="Calendar1" runat="server"></asp:Calendar>
-        <asp:Calendar ID="Calendar2" runat="server"></asp:Calendar>--%>
+     <asp:Calendar ID="Calendar1" runat="server"></asp:Calendar>
+        <asp:Calendar ID="Calendar2" runat="server"></asp:Calendar>
         <br />
-   <%--     <asp:Button ID="SelectPeriod" runat="server" Text="Сформировать" OnClick="SelectPeriod_Click" />--%>
+      <asp:Button ID="SelectPeriod" runat="server" Text="Сформировать" OnClick="SelectPeriod_Click" />
         <asp:Button ID="Export" runat="server" Text="Экспорт" OnClick="Export_Click" />
         <a href="/Report/Index">Вернуться к отчетам</a>
         <br />

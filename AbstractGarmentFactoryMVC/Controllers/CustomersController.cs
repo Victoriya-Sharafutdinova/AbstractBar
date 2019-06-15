@@ -10,6 +10,7 @@ using AbstractGarmentFactoryMVC.Models;
 using AbstractGarmentFactoryModel;
 using AbstractGarmentFactoryServiceDAL.Interfaces;
 using AbstractGarmentFactoryServiceDAL.BindingModel;
+using AbstractGarmentFactoryServiceDAL.ViewModel;
 
 namespace AbstractGarmentFactoryMVC.Controllers
 {
@@ -18,7 +19,8 @@ namespace AbstractGarmentFactoryMVC.Controllers
         public ICustomerService service = Globals.CustomerService;
         public ActionResult Index()
         {
-            return View(service.GetList());
+            List<CustomerViewModel> list = APICustomer.GetRequest<List<CustomerViewModel>>("api/Customer/GetList");
+            return View(list);
         }
 
         public ActionResult Create()
@@ -29,7 +31,7 @@ namespace AbstractGarmentFactoryMVC.Controllers
         [HttpPost]
         public ActionResult CreatePost()
         {
-            service.AddElement(new CustomerBindingModel
+            APICustomer.PostRequest<CustomerBindingModel, bool>("api/Customer/AddElement", new CustomerBindingModel
             {
                 CustomerFIO = Request["CustomerFIO"]
             });
@@ -50,17 +52,18 @@ namespace AbstractGarmentFactoryMVC.Controllers
         [HttpPost]
         public ActionResult EditPost()
         {
-            service.UpdElement(new CustomerBindingModel
+            APICustomer.PostRequest<CustomerBindingModel, bool>("api/Customer/UpdElement", new CustomerBindingModel
             {
                 Id = int.Parse(Request["Id"]),
                 CustomerFIO = Request["CustomerFIO"]
             });
+           
             return RedirectToAction("Index");
         }
 
         public ActionResult Delete(int id)
         {
-            service.DelElement(id);
+            APICustomer.PostRequest<CustomerBindingModel, bool>("api/Customer/DelElement", new CustomerBindingModel { Id = id });
             return RedirectToAction("Index");
         }
     }

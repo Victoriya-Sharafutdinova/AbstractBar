@@ -136,6 +136,10 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AbstractGarmentFactoryMVC\AbstractGarmentFactoryMVC.csproj">
+      <Project>{3857DEAB-C3BB-4A5E-B0CE-4790D1B73F8E}</Project>
+      <Name>AbstractGarmentFactoryMVC</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AbstractGarmentFactoryServiceDAL\AbstractGarmentFactoryServiceDAL.csproj">
       <Project>{d313478b-d385-4243-b9c5-387eb73ca6f6}</Project>
       <Name>AbstractGarmentFactoryServiceDAL</Name>

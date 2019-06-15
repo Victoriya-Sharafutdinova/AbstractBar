@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AbstractGarmentFactoryMVC;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -9,6 +10,7 @@ namespace AbstractGarmentFactoryRestApi
     {
         public static void Register(HttpConfiguration config)
         {
+            APICustomer.Connect();
             // Конфигурация и службы веб-API
 
             // Маршруты веб-API
@@ -19,6 +21,8 @@ namespace AbstractGarmentFactoryRestApi
                 routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+
         }
     }
 }
