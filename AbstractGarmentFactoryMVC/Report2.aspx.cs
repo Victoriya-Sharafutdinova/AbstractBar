@@ -24,13 +24,10 @@ namespace AbstractGarmentFactoryMVC
         {
             SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
 
-            // By specifying a location that is under ASP.NET application's control, 
-            // GemBox.Spreadsheet can use file system operations to retrieve font data even in Medium Trust environment.
             FontSettings.FontsBaseDirectory = Server.MapPath("Fonts/");
 
             if (!Page.IsPostBack)
             {
-
                 DataTable people = new DataTable();
 
                 people.Columns.Add("Компоненты", typeof(string));
@@ -40,8 +37,6 @@ namespace AbstractGarmentFactoryMVC
 
                 Session["people"] = people;
                 LoadDataTable();
-                // this.LoadDataTable(Request.PhysicalApplicationPath + "InData.xlsx");
-
                 this.SetDataBinding();
             }
         }
@@ -50,20 +45,18 @@ namespace AbstractGarmentFactoryMVC
         {
             DataTable people = (DataTable)Session["people"];
 
-            // Create Excel file.
             ExcelFile ef = new ExcelFile();
             ef.DefaultFontName = "Calibri";
             ExcelWorksheet ws = ef.Worksheets.Add("DataSheet");
             ws.InsertDataTable(people, new InsertDataTableOptions(0, 0) { ColumnHeaders = true });
 
-            // Stream or export a file to ASP.NET client's browser.
             ef.Save(this.Response, "StoragesLoad.xls");
             reportService.SaveCustomerIndents(new ReportBindingModel
             {
-
                 FileName = "StoragesLoad.xls"
             });
         }
+
         public List<StorageLoadViewModel> GetStoragesLoad()
         {
             return context.Storages
@@ -83,6 +76,7 @@ namespace AbstractGarmentFactoryMVC
                 })
                     .ToList();
         }
+
         private DataTable LoadDataTable()
         {
             DataTable people = (DataTable)Session["people"];
@@ -109,9 +103,6 @@ namespace AbstractGarmentFactoryMVC
             }
             return people;
         }
-            
-
-        
 
         private void LoadDataFromFile(string fileName)
         {
@@ -133,44 +124,5 @@ namespace AbstractGarmentFactoryMVC
             peopleDataView.AllowDelete = true;
             this.GridView1.DataBind();
         }
-
-        //protected void gridview1_rowdeleting(object sender, gridviewdeleteeventargs e)
-        //{
-        //    datatable people = (datatable)session["people"];
-
-        //    people.rows[e.rowindex].delete();
-        //    this.setdatabinding();
-        //}
-
-        //protected void gridview1_rowediting(object sender, gridviewediteventargs e)
-        //{
-        //    this.gridview1.editindex = e.neweditindex;
-        //    this.setdatabinding();
-        //}
-
-        //protected void gridview1_rowupdating(object sender, gridviewupdateeventargs e)
-        //{
-        //    int i;
-        //    int rowindex = e.rowindex;
-        //    datatable people = (datatable)session["people"];
-
-        //    for (i = 1; i <= people.columns.count; i++)
-        //    {
-        //        textbox edittextbox = this.gridview1.rows[rowindex].cells[i].controls[0] as textbox;
-
-        //        if (edittextbox != null)
-        //            people.rows[rowindex][i - 1] = edittextbox.text;
-        //    }
-
-        //    this.gridview1.editindex = -1;
-        //    this.setdatabinding();
-        //}
-
-        //protected void gridview1_rowcancelingedit(object sender, gridviewcancelediteventargs e)
-        //{
-        //    this.gridview1.editindex = -1;
-        //    this.setdatabinding();
-        //}
     }
-
 }

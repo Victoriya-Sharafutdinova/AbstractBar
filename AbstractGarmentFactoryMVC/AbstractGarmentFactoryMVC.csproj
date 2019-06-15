@@ -186,7 +186,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="APICustomer.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -397,6 +396,10 @@
     <ProjectReference Include="..\AbstractGarmentFactoryServiceImplement\AbstractGarmentFactoryServiceImplement.csproj">
       <Project>{1c771b32-3715-4769-88b8-5a76025aa4e8}</Project>
       <Name>AbstractGarmentFactoryServiceImplement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AbstractGarmentFactoryView\AbstractGarmentFactoryView.csproj">
+      <Project>{1B704247-1D26-4F6F-B43C-7CB48C5B2612}</Project>
+      <Name>AbstractGarmentFactoryView</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

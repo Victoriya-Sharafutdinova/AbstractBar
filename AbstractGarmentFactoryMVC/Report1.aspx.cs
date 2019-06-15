@@ -28,9 +28,7 @@ namespace ReportsWeb.Report
         protected void Page_Load(object sender, EventArgs e)
         {
             SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
-
-            // By specifying a location that is under ASP.NET application's control, 
-            // GemBox.Spreadsheet can use file system operations to retrieve font data even in Medium Trust environment.
+         
             FontSettings.FontsBaseDirectory = Server.MapPath("Fonts/");
 
             if (!Page.IsPostBack)
@@ -38,17 +36,8 @@ namespace ReportsWeb.Report
                 
                 DataTable people = new DataTable();
 
-               
-                //people.Columns.Add("ФИО", typeof(string));
-                //people.Columns.Add("Дата создания", typeof(DateTime));
-                //people.Columns.Add("Изделие", typeof(string));
-                //people.Columns.Add("Количество", typeof(int));
-                //people.Columns.Add("Сумма", typeof(int));
-                //people.Columns.Add("Статус", typeof(string));
-
                 Session["people"] = people;
                 LoadDataTable("Indents");
-               // this.LoadDataTable(Request.PhysicalApplicationPath + "InData.xlsx");
 
                 this.SetDataBinding();
             }
@@ -86,21 +75,14 @@ namespace ReportsWeb.Report
             ExcelWorksheet ws = ef.Worksheets.Add("DataSheet");
             ws.InsertDataTable(people, new InsertDataTableOptions(0, 0) { ColumnHeaders = true });
             
-
-
-
-            // Stream or export a file to ASP.NET client's browser.
             ef.Save(this.Response, "Report.pdf");
             reportService.SaveCustomerIndents(new ReportBindingModel
             {
-                DateFrom = new DateTime(2018, 1, 1),
-                DateTo = DateTime.Now,
-                //DateFrom = Calendar1.SelectedDate,
-                //DateTo = Calendar2.SelectedDate,
+                DateFrom = Calendar1.SelectedDate,
+                DateTo = Calendar2.SelectedDate,
                 FileName = "Report.pdf"
             });
         }
-
 
         protected void SelectPeriod_Click(object sender, EventArgs e)
         {
@@ -142,8 +124,6 @@ namespace ReportsWeb.Report
                 return people;
             }
         }
-
-      
 
         private DataTable LoadDataTable (string table)
         {
@@ -189,43 +169,5 @@ namespace ReportsWeb.Report
             peopleDataView.AllowDelete = true;
             this.GridView1.DataBind();
         }
-
-        //protected void GridView1_RowDeleting(object sender, GridViewDeleteEventArgs e)
-        //{
-        //    DataTable people = (DataTable)Session["people"];
-
-        //    people.Rows[e.RowIndex].Delete();
-        //    this.SetDataBinding();
-        //}
-
-        //protected void GridView1_RowEditing(object sender, GridViewEditEventArgs e)
-        //{
-        //    this.GridView1.EditIndex = e.NewEditIndex;
-        //    this.SetDataBinding();
-        //}
-
-        //protected void GridView1_RowUpdating(object sender, GridViewUpdateEventArgs e)
-        //{
-        //    int i;
-        //    int rowIndex = e.RowIndex;
-        //    DataTable people = (DataTable)Session["people"];
-
-        //    for (i = 1; i <= people.Columns.Count; i++)
-        //    {
-        //        TextBox editTextBox = this.GridView1.Rows[rowIndex].Cells[i].Controls[0] as TextBox;
-
-        //        if (editTextBox != null)
-        //            people.Rows[rowIndex][i - 1] = editTextBox.Text;
-        //    }
-
-        //    this.GridView1.EditIndex = -1;
-        //    this.SetDataBinding();
-        //}
-
-        //protected void GridView1_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
-        //{
-        //    this.GridView1.EditIndex = -1;
-        //    this.SetDataBinding();
-        //}
     }
 }

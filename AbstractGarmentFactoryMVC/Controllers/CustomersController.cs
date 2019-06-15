@@ -11,6 +11,7 @@ using AbstractGarmentFactoryModel;
 using AbstractGarmentFactoryServiceDAL.Interfaces;
 using AbstractGarmentFactoryServiceDAL.BindingModel;
 using AbstractGarmentFactoryServiceDAL.ViewModel;
+using AbstractGarmentFactoryView;
 
 namespace AbstractGarmentFactoryMVC.Controllers
 {

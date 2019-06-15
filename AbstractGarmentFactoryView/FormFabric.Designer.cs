@@ -100,7 +100,7 @@
             this.buttonUpd.Text = "Обновить";
             this.buttonUpd.UseVisualStyleBackColor = true;
             this.buttonUpd.UseWaitCursor = true;
-            this.buttonUpd.Click += new System.EventHandler(this.buttonUpd_Click);
+         //   this.buttonUpd.Click += new System.EventHandler(this.buttonUpd_Click);
             // 
             // buttonDel
             // 

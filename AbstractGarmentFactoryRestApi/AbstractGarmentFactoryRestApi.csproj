@@ -148,6 +148,10 @@
       <Project>{69fae82b-5447-4ee6-8959-22dbae242d4a}</Project>
       <Name>AbstractGarmentFactoryServiceImplementDataBase</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AbstractGarmentFactoryView\AbstractGarmentFactoryView.csproj">
+      <Project>{1B704247-1D26-4F6F-B43C-7CB48C5B2612}</Project>
+      <Name>AbstractGarmentFactoryView</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

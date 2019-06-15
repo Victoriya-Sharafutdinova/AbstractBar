@@ -10,6 +10,8 @@ using AbstractGarmentFactoryMVC.Models;
 using AbstractGarmentFactoryModel;
 using AbstractGarmentFactoryServiceDAL.BindingModel;
 using AbstractGarmentFactoryServiceDAL.Interfaces;
+using AbstractGarmentFactoryServiceDAL.ViewModel;
+using AbstractGarmentFactoryView;
 
 namespace AbstractGarmentFactoryMVC.Controllers
 {
@@ -19,7 +21,8 @@ namespace AbstractGarmentFactoryMVC.Controllers
         // GET: Stockings
         public ActionResult Index()
         {
-            return View(service.GetList());
+            List<StockingViewModel> list = APICustomer.GetRequest<List<StockingViewModel>>("api/Stocking/GetList");
+            return View(list);
         }
 
 
@@ -33,7 +36,7 @@ namespace AbstractGarmentFactoryMVC.Controllers
         [HttpPost]
         public ActionResult CreatePost()
         {
-            service.AddElement(new StockingBindingModel
+            APICustomer.PostRequest<StockingBindingModel, bool>("api/Stocking/AddElement", new StockingBindingModel
             {
                 StockingName = Request["StockingName"]
             });
@@ -43,7 +46,7 @@ namespace AbstractGarmentFactoryMVC.Controllers
 
         // GET: Stockings/Edit/5
         public ActionResult Edit(int id)
-        {
+        {           
             var viewModel = service.GetElement(id);
             var bindingModel = new StockingBindingModel
             {
@@ -57,7 +60,7 @@ namespace AbstractGarmentFactoryMVC.Controllers
         [HttpPost]
         public ActionResult EditPost()
         {
-            service.UpdElement(new StockingBindingModel
+            APICustomer.PostRequest<StockingBindingModel, bool>("api/Stocking/UpdElement", new StockingBindingModel
             {
                 Id = int.Parse(Request["Id"]),
                 StockingName = Request["StockingName"]
@@ -69,7 +72,7 @@ namespace AbstractGarmentFactoryMVC.Controllers
         // GET: Stockings/Delete/5
         public ActionResult Delete(int id)
         {
-            service.DelElement(id);
+            APICustomer.PostRequest<StockingBindingModel, bool>("api/Stocking/DelElement", new StockingBindingModel { Id = id });
             return RedirectToAction("Index");
         }
     }
