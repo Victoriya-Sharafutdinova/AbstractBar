@@ -1,4 +1,5 @@
-﻿using AbstractGarmentFactoryServiceDAL.Interfaces;
+﻿using AbstractGarmentFactoryServiceDAL.BindingModel;
+using AbstractGarmentFactoryServiceDAL.Interfaces;
 using AbstractGarmentFactoryServiceDAL.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -9,20 +10,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Unity;
 
 namespace AbstractGarmentFactoryView
 {
     public partial class FormFabrics : Form
     {
-        [Dependency] public new IUnityContainer Container { get; set; }
-
-        private readonly IFabricService service;
-
-        public FormFabrics(IFabricService service)
+        public FormFabrics()
         {
             InitializeComponent();
-            this.service = service;
         }
 
         private void FormFubric_Load(object sender, EventArgs e)
@@ -34,7 +29,7 @@ namespace AbstractGarmentFactoryView
         {
             try
             {
-                List<FabricViewModel> list = service.GetList();
+                List<FabricViewModel> list = APICustomer.GetRequest<List<FabricViewModel>>("api/Fabric/GetList");
                 if (list != null)
                 {
                     dataGridView.DataSource = list;
@@ -57,7 +52,10 @@ namespace AbstractGarmentFactoryView
                     int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                     try
                     {
-                        service.DelElement(id);
+                        APICustomer.PostRequest<FabricBindingModel, bool>("api/Fabric/DelElement", new FabricBindingModel
+                        {
+                            Id = id
+                        });
                     }
                     catch (Exception ex)
                     {
@@ -72,8 +70,8 @@ namespace AbstractGarmentFactoryView
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                var form = Container.Resolve<FormFabric>();
-                form.Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
+                var form = new FormFabric();
+                form.Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);              
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     LoadData();
@@ -83,7 +81,7 @@ namespace AbstractGarmentFactoryView
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormFabric>();
+            var form = new FormFabric();
             if (form.ShowDialog() == DialogResult.OK)
             {
                 LoadData();

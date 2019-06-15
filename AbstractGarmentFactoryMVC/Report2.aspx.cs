@@ -22,7 +22,8 @@ namespace AbstractGarmentFactoryMVC
         private IReportService reportService;
         protected void Page_Load(object sender, EventArgs e)
         {
-            SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");         
+            SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
+
             FontSettings.FontsBaseDirectory = Server.MapPath("Fonts/");
 
             if (!Page.IsPostBack)
@@ -43,13 +44,11 @@ namespace AbstractGarmentFactoryMVC
         {
             DataTable people = (DataTable)Session["people"];
 
-            // Create Excel file.
             ExcelFile ef = new ExcelFile();
             ef.DefaultFontName = "Calibri";
             ExcelWorksheet ws = ef.Worksheets.Add("DataSheet");
             ws.InsertDataTable(people, new InsertDataTableOptions(0, 0) { ColumnHeaders = true });
 
-            // Stream or export a file to ASP.NET client's browser.
             ef.Save(this.Response, "StoragesLoad.xls");
             reportService.SaveCustomerIndents(new ReportBindingModel
             {
@@ -113,7 +112,5 @@ namespace AbstractGarmentFactoryMVC
             peopleDataView.AllowDelete = true;
             this.GridView1.DataBind();
         }
-
     }
-
 }

@@ -81,7 +81,7 @@ namespace AbstractGarmentFactoryMVC.Controllers
                 table.Design = TableDesign.LightGridAccent2;
                 table.Rows[0].Cells[0].Paragraphs.First().Append("Name");
                 table.Rows[0].Cells[1].Paragraphs.First().Append("Value");
-                
+
                 for (int i = 0; i < products.Count; i++)
                 {
                    
@@ -94,7 +94,7 @@ namespace AbstractGarmentFactoryMVC.Controllers
 
                 MemoryStream ms = new MemoryStream();
                 document.SaveAs(ms);
-               
+
                 byte[] byteArray = ms.ToArray();
                 ms.Flush();
                 ms.Close();
@@ -104,12 +104,13 @@ namespace AbstractGarmentFactoryMVC.Controllers
                 Response.AddHeader("Content-Length", byteArray.Length.ToString());
                 Response.ContentType = "application/msword";
                 Response.BinaryWrite(byteArray);
-                Response.End();              
+                Response.End();             
+
             }
             catch (Exception)
             {
                 throw;
             }
         }
-    }
+    }    
 }

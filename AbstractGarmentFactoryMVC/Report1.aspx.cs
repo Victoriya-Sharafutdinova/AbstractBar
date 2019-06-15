@@ -27,7 +27,8 @@ namespace ReportsWeb.Report
         private IReportService reportService;
         protected void Page_Load(object sender, EventArgs e)
         {
-            SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");           
+            SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
+
             FontSettings.FontsBaseDirectory = Server.MapPath("Fonts/");
 
             if (!Page.IsPostBack)
@@ -60,7 +61,7 @@ namespace ReportsWeb.Report
                 })
                     .ToList();
         }
-
+        
         protected void Export_Click(object sender, EventArgs e)
         {
             DataTable people = (DataTable)Session["people"];
@@ -71,10 +72,6 @@ namespace ReportsWeb.Report
             ExcelWorksheet ws = ef.Worksheets.Add("DataSheet");
             ws.InsertDataTable(people, new InsertDataTableOptions(0, 0) { ColumnHeaders = true });
             
-
-
-
-            // Stream or export a file to ASP.NET client's browser.
             ef.Save(this.Response, "Report.pdf");
             reportService.SaveCustomerIndents(new ReportBindingModel
             {
@@ -84,7 +81,6 @@ namespace ReportsWeb.Report
                 FileName = "Report.pdf"
             });
         }
-
 
         protected void SelectPeriod_Click(object sender, EventArgs e)
         {
@@ -102,6 +98,7 @@ namespace ReportsWeb.Report
         private DataTable LoadDataTableSelectPeriod()
         {
             DateTime DateFrom = Calendar1.SelectedDate;
+
             DateTime DateTo = Calendar2.SelectedDate;
             string conSTR = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\ВИКА\\AbstractDatabase.mdf;Integrated Security=True;Connect Timeout=30";
             string query = "SELECT c.CustomerFIO, f.FabricName, " +
@@ -111,20 +108,20 @@ namespace ReportsWeb.Report
                 "ON i.CustomerId = c.Id " +
                 "JOIN AbstractDatabase.dbo.[Fabrics] f " +
                 "ON f.Id = i.FabricId " +
-                "WHERE i.DateCreate BETWEEN N'" + DateFrom.ToString("yyyy-MM-dd HH:mm:ss") + "' AND N'" + DateTo.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-
+                "WHERE i.DateCreate BETWEEN N'" + DateFrom.ToString("yyyy-MM-dd HH:mm:ss") + "' AND N'" + DateTo.ToString("yyyy-MM-dd HH:mm:ss") +"'";
             using (SqlConnection sqlConn = new SqlConnection(conSTR))
             using (SqlCommand cmd = new SqlCommand(query, sqlConn))
             {
 
                 sqlConn.Open();
-                DataTable people = new DataTable();
+                DataTable people = new DataTable() ;
                 people.Load(cmd.ExecuteReader());
                 return people;
             }
         }
 
-        private DataTable LoadDataTable(string table)
+        private DataTable LoadDataTable (string table)
+
         {
             string conSTR = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\ВИКА\\AbstractDatabase.mdf;Integrated Security=True;Connect Timeout=30";
             string query = "SELECT c.CustomerFIO, f.FabricName, " +
@@ -148,13 +145,14 @@ namespace ReportsWeb.Report
 
         private void SetDataBinding()
         {
-            DataTable people = (DataTable)Session["people"];
+            DataTable people = null;
+             people = (DataTable)Session["people"];
             DataView peopleDataView = people.DefaultView;
-
+            this.GridView1.DataSource = null;
+           
             this.GridView1.DataSource = peopleDataView;
             peopleDataView.AllowDelete = true;
             this.GridView1.DataBind();
         }
-
     }
 }

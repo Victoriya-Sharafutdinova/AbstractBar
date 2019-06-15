@@ -3,35 +3,30 @@ using AbstractGarmentFactoryServiceDAL.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Unity;
+
 
 namespace AbstractGarmentFactoryView
 {
     public partial class FormFabricStocking : Form
     {
-        [Dependency] public new IUnityContainer Container { get; set; }
-
         public FabricStockingViewModel Model
         {
             set { model = value; }
             get { return model; }
         }
 
-        private readonly IStockingService service;
-
         private FabricStockingViewModel model;
 
-        public FormFabricStocking(IStockingService service)
+        public FormFabricStocking()
         {
             InitializeComponent();
-            this.service = service;
         }
 
-        private void FormProductComponent_Load(object sender, EventArgs e)
+        private void FormFabricStocking_Load(object sender, EventArgs e)
         {
             try
             {
-                List<StockingViewModel> list = service.GetList();
+                List<StockingViewModel> list = APICustomer.GetRequest<List<StockingViewModel>>("api/Stocking/GetList");
                 if (list != null)
                 {
                     comboBoxStocking.DisplayMember = "StockingName";
