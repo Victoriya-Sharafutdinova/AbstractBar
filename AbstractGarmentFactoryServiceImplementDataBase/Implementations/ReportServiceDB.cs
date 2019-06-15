@@ -77,7 +77,8 @@ namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
                 for (int i = 0; i < products.Count; ++i)
                 {
                     table.Cell(i + 1, 1).Range.Text = products[i].FabricName;
-                    table.Cell(i + 1, 2).Range.Text = products[i].Value.ToString(); }
+                    table.Cell(i + 1, 2).Range.Text = products[i].Value.ToString();
+                }
                 //задаем границы таблицы         
                 table.Borders.InsideLineStyle = WdLineStyle.wdLineStyleInset;
                 table.Borders.OutsideLineStyle = WdLineStyle.wdLineStyleSingle; 
@@ -137,7 +138,8 @@ namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
 
         public void SaveStoragesLoad(ReportBindingModel model)
         {
-            var excel = new Microsoft.Office.Interop.Excel.Application(); try
+            var excel = new Microsoft.Office.Interop.Excel.Application();
+            try
             {
                 //или создаем excel-файл, или открываем существующий          
                 if (File.Exists(model.FileName))
@@ -260,7 +262,8 @@ namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
                     Total = rec.Total,
                     Condition = rec.Condition.ToString()
                 })
-                    .ToList(); }
+                    .ToList();
+        }
 
         public void SaveCustomerIndents(ReportBindingModel model)
         {        
