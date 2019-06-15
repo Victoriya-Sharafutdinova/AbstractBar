@@ -17,6 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbstractGarmentFactoryServi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbstractGarmentFactoryRestApi", "AbstractGarmentFactoryRestApi\AbstractGarmentFactoryRestApi.csproj", "{BB36ECAF-083E-43C4-8AB2-7D8E93F8AFBA}"
 EndProject
+
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -50,7 +50,6 @@ namespace AbstractGarmentFactoryMVC.Controllers
             return Redirect("/Report2.aspx");
         }
 
-
         public ActionResult FabricValue()
         {
             SaveFabricValue(new ReportBindingModel
@@ -82,10 +81,10 @@ namespace AbstractGarmentFactoryMVC.Controllers
                 table.Design = TableDesign.LightGridAccent2;
                 table.Rows[0].Cells[0].Paragraphs.First().Append("Name");
                 table.Rows[0].Cells[1].Paragraphs.First().Append("Value");
-             
+
                 for (int i = 0; i < products.Count; i++)
                 {
-                    
+                   
                     table.Rows[i+1].Cells[0].Paragraphs.First().Append(products[i].FabricName);
                     table.Rows[i+1].Cells[1].Paragraphs.First().Append(products[i].Value.ToString());
                 }
@@ -95,6 +94,7 @@ namespace AbstractGarmentFactoryMVC.Controllers
 
                 MemoryStream ms = new MemoryStream();
                 document.SaveAs(ms);
+
                 byte[] byteArray = ms.ToArray();
                 ms.Flush();
                 ms.Close();
@@ -105,12 +105,12 @@ namespace AbstractGarmentFactoryMVC.Controllers
                 Response.ContentType = "application/msword";
                 Response.BinaryWrite(byteArray);
                 Response.End();             
+
             }
             catch (Exception)
             {
                 throw;
             }
-           
         }
     }    
 }

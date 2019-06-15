@@ -28,17 +28,15 @@ namespace ReportsWeb.Report
         protected void Page_Load(object sender, EventArgs e)
         {
             SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
-         
+
             FontSettings.FontsBaseDirectory = Server.MapPath("Fonts/");
 
             if (!Page.IsPostBack)
-            {
-                
+            {               
                 DataTable people = new DataTable();
 
                 Session["people"] = people;
                 LoadDataTable("Indents");
-
                 this.SetDataBinding();
             }
         }
@@ -63,8 +61,7 @@ namespace ReportsWeb.Report
                 })
                     .ToList();
         }
-
-
+        
         protected void Export_Click(object sender, EventArgs e)
         {
             DataTable people = (DataTable)Session["people"];
@@ -78,6 +75,7 @@ namespace ReportsWeb.Report
             ef.Save(this.Response, "Report.pdf");
             reportService.SaveCustomerIndents(new ReportBindingModel
             {
+
                 DateFrom = Calendar1.SelectedDate,
                 DateTo = Calendar2.SelectedDate,
                 FileName = "Report.pdf"
@@ -86,24 +84,22 @@ namespace ReportsWeb.Report
 
         protected void SelectPeriod_Click(object sender, EventArgs e)
         {
-            DataTable people = null;
             GridView1.DataSource = null;
 
             LoadDataTableSelectPeriod();
-            
-            people = (DataTable)Session["people"];
-            people = LoadDataTableSelectPeriod();
+            DataTable people = LoadDataTableSelectPeriod();
             DataView peopleDataView = people.DefaultView;
-           
-            GridView1.DataSource = peopleDataView;
+
+            this.GridView1.DataSource = peopleDataView;
             peopleDataView.AllowDelete = true;
-            GridView1.DataBind();
+            this.GridView1.DataBind();
         }
 
         private DataTable LoadDataTableSelectPeriod()
         {
             DateTime DateFrom = Calendar1.SelectedDate;
-            DateTime DateTo = Calendar2.SelectedDate.ToLocalTime();
+
+            DateTime DateTo = Calendar2.SelectedDate;
             string conSTR = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\ВИКА\\AbstractDatabase.mdf;Integrated Security=True;Connect Timeout=30";
             string query = "SELECT c.CustomerFIO, f.FabricName, " +
                 "i.Amount, i.Total, i.Condition, i.DateCreate, i.DateImplement " +
@@ -113,7 +109,6 @@ namespace ReportsWeb.Report
                 "JOIN AbstractDatabase.dbo.[Fabrics] f " +
                 "ON f.Id = i.FabricId " +
                 "WHERE i.DateCreate BETWEEN N'" + DateFrom.ToString("yyyy-MM-dd HH:mm:ss") + "' AND N'" + DateTo.ToString("yyyy-MM-dd HH:mm:ss") +"'";
-
             using (SqlConnection sqlConn = new SqlConnection(conSTR))
             using (SqlCommand cmd = new SqlCommand(query, sqlConn))
             {
@@ -126,6 +121,7 @@ namespace ReportsWeb.Report
         }
 
         private DataTable LoadDataTable (string table)
+
         {
             string conSTR = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\ВИКА\\AbstractDatabase.mdf;Integrated Security=True;Connect Timeout=30";
             string query = "SELECT c.CustomerFIO, f.FabricName, " +
@@ -136,8 +132,8 @@ namespace ReportsWeb.Report
                 "JOIN AbstractDatabase.dbo.[Fabrics] f " +
                 "ON f.Id = i.FabricId ";
 
-            using(SqlConnection sqlConn = new SqlConnection(conSTR))
-            using(SqlCommand cmd = new SqlCommand(query, sqlConn))
+            using (SqlConnection sqlConn = new SqlConnection(conSTR))
+            using (SqlCommand cmd = new SqlCommand(query, sqlConn))
             {
 
                 sqlConn.Open();
@@ -145,17 +141,6 @@ namespace ReportsWeb.Report
                 people.Load(cmd.ExecuteReader());
                 return people;
             }
-        }
-
-        private void LoadDataFromFile(string fileName)
-        {
-            DataTable people = (DataTable)Session["people"];
-
-            ExcelFile ef = ExcelFile.Load(fileName);
-
-            ExcelWorksheet ws = ef.Worksheets[0];
-
-            ws.ExtractToDataTable(people, new ExtractToDataTableOptions("A1", ws.Rows.Count));
         }
 
         private void SetDataBinding()

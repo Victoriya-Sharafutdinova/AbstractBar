@@ -34,7 +34,6 @@ namespace AbstractGarmentFactoryMVC
                 people.Columns.Add("Название склада", typeof(string));
                 people.Columns.Add("Количество", typeof(int));
                 
-
                 Session["people"] = people;
                 LoadDataTable();
                 this.SetDataBinding();
@@ -102,18 +101,7 @@ namespace AbstractGarmentFactoryMVC
                 }
             }
             return people;
-        }
-
-        private void LoadDataFromFile(string fileName)
-        {
-            DataTable people = (DataTable)Session["people"];
-
-            ExcelFile ef = ExcelFile.Load(fileName);
-
-            ExcelWorksheet ws = ef.Worksheets[0];
-
-            ws.ExtractToDataTable(people, new ExtractToDataTableOptions("A1", ws.Rows.Count));
-        }
+        }          
 
         private void SetDataBinding()
         {
