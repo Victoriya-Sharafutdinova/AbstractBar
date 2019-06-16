@@ -57,7 +57,6 @@ namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
                 Total = model.Total,
                 Condition = IndentCondition.Принят
             };
-         //   context.Indents.Add(indent);
 
             var customer = context.Customers.FirstOrDefault(x => x.Id == model.CustomerId);
             SendEmail(customer.Mail, "Оповещение по заказам", 
