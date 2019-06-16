@@ -11,6 +11,7 @@ using AbstractGarmentFactoryModel;
 using AbstractGarmentFactoryServiceDAL.ViewModel;
 using AbstractGarmentFactoryServiceDAL.Interfaces;
 using AbstractGarmentFactoryServiceDAL.BindingModel;
+using AbstractGarmentFactoryView;
 
 namespace AbstractGarmentFactoryMVC.Controllers
 {
@@ -24,7 +25,8 @@ namespace AbstractGarmentFactoryMVC.Controllers
         // GET: FabricIndent
         public ActionResult Index()
         {
-            return View(mainService.GetList());
+            List<IndentViewModel> list = APICustomer.GetRequest<List<IndentViewModel>>("api/Main/GetList");
+            return View(list);
         }
 
         public ActionResult Create()
@@ -44,13 +46,12 @@ namespace AbstractGarmentFactoryMVC.Controllers
             var amount = int.Parse(Request["Amount"]);
             var total = CalcSum(fabricId, amount);
 
-            mainService.CreateIndent(new IndentBindingModel
+            APICustomer.PostRequest<IndentBindingModel, bool>("api/Main/CreateIndent", new IndentBindingModel
             {
-                FabricId = fabricId,
-                CustomerId = customerId,                
-                Amount = amount,
-                Total = total
-
+               FabricId = fabricId,
+               CustomerId = customerId,
+               Amount = amount,
+               Total = total
             });
             return RedirectToAction("Index");
         }
@@ -68,13 +69,13 @@ namespace AbstractGarmentFactoryMVC.Controllers
                 switch (status)
                 {
                     case "Processing":
-                        mainService.TakeIndentInWork(new IndentBindingModel { Id = id });
+                        APICustomer.PostRequest<IndentBindingModel, bool>("api/Main/TakeIndentInWork", new IndentBindingModel { Id = id });
                         break;
                     case "Ready":
-                        mainService.FinishIndent(new IndentBindingModel { Id = id });
+                        APICustomer.PostRequest<IndentBindingModel, bool>("api/Main/FinishIndent", new IndentBindingModel { Id = id });
                         break;
                     case "Paid":
-                        mainService.PayIndent(new IndentBindingModel { Id = id });
+                        APICustomer.PostRequest<IndentBindingModel, bool>("api/Main/PayIndent", new IndentBindingModel { Id = id });
                         break;
                 }
             }

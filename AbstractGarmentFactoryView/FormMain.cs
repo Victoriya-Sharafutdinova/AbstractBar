@@ -4,28 +4,22 @@ using AbstractGarmentFactoryServiceDAL.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Unity;
+
 
 namespace AbstractGarmentFactoryView
 {
     public partial class FormMain : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
-
-        private readonly IMainService service;
-
-        public FormMain(IMainService service)
+        public FormMain()
         {
             InitializeComponent();
-            this.service = service;
         }
 
         private void LoadData()
         {
             try
             {
-                List<IndentViewModel> list = service.GetList();
+                List<IndentViewModel> list = APICustomer.GetRequest<List<IndentViewModel>>("api/Main/GetList");
                 if (list != null)
                 {
                     dataGridView1.DataSource = list;
@@ -44,49 +38,49 @@ namespace AbstractGarmentFactoryView
 
         private void клиентыToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormCustomers>();
+            var form = new FormCustomers();
             form.ShowDialog();
         }
 
         private void заготовкиToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormStockings>();
+            var form = new FormStockings();
             form.ShowDialog();
         }
 
         private void изделияToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormFabrics>();
+            var form = new FormFabrics();
             form.ShowDialog();
         }
 
         private void пополнитьСкладToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormPutOnStorage>();
+            var form = new FormPutOnStorage();
             form.ShowDialog();
         }
 
         private void складыToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormStorages>();
+            var form = new FormStorages();
             form.ShowDialog();
         }
 
         private void buttonCreateOrder_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormCreateIndent>();
+            var form = new FormCreateIndent();
             form.ShowDialog();
             LoadData();
         }
 
-        private void buttonTakeOrderInWork_Click(object sender, EventArgs e)
+        private void buttonTakIndentInWork_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count == 1)
             {
                 int id = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells[0].Value);
                 try
                 {
-                    service.TakeIndentInWork(new IndentBindingModel
+                    APICustomer.PostRequest<IndentBindingModel, bool>("api/Main/TakeIndentInWork", new IndentBindingModel
                     {
                         Id = id
                     });
@@ -99,14 +93,14 @@ namespace AbstractGarmentFactoryView
             }
         }
 
-        private void buttonOrderReady_Click(object sender, EventArgs e)
+        private void buttonIndentReady_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count == 1)
             {
                 int id = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells[0].Value);
                 try
                 {
-                    service.FinishIndent(new IndentBindingModel
+                    APICustomer.PostRequest<IndentBindingModel, bool>("api/Main/FinishIndent", new IndentBindingModel
                     {
                         Id = id
                     });
@@ -119,14 +113,14 @@ namespace AbstractGarmentFactoryView
             }
         }
 
-        private void buttonPayOrder_Click(object sender, EventArgs e)
+        private void buttonPayIndent_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count == 1)
             {
                 int id = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells[0].Value);
                 try
                 {
-                    service.PayIndent(new IndentBindingModel
+                    APICustomer.PostRequest<IndentBindingModel, bool>("api/Main/PayIndent", new IndentBindingModel
                     {
                         Id = id
                     });
@@ -144,6 +138,38 @@ namespace AbstractGarmentFactoryView
             LoadData();
         }
 
+        private void прайсИзделийToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                Filter = "doc|*.doc|docx|*.docx"
+            };
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    APICustomer.PostRequest<ReportBindingModel, bool>("api/Report/SaveFabricValue", new ReportBindingModel
+                    {
+                        FileName = sfd.FileName
+                    });
+                    MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
 
+        private void загруженностьСкладовToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new FormStoragesLoad();
+            form.ShowDialog();
+        }
+
+        private void заказыКлиентовToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new FormCustomerIndents();
+            form.ShowDialog(); }
     }
 }

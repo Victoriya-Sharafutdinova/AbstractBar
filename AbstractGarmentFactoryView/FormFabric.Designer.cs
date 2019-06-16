@@ -100,7 +100,7 @@
             this.buttonUpd.Text = "Обновить";
             this.buttonUpd.UseVisualStyleBackColor = true;
             this.buttonUpd.UseWaitCursor = true;
-            this.buttonUpd.Click += new System.EventHandler(this.buttonUpd_Click);
+         //   this.buttonUpd.Click += new System.EventHandler(this.buttonUpd_Click);
             // 
             // buttonDel
             // 
@@ -179,7 +179,7 @@
             this.Controls.Add(this.label1);
             this.Name = "FormFabric";
             this.Text = "Изделие";
-            this.Load += new System.EventHandler(this.FormProduct_Load);
+            this.Load += new System.EventHandler(this.FormFabric_Load);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);

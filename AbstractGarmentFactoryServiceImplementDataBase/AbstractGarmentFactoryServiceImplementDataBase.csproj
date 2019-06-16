@@ -64,6 +64,7 @@
     <Compile Include="Implementations\CustomerServiceDB.cs" />
     <Compile Include="Implementations\FabricServiceDB.cs" />
     <Compile Include="Implementations\MainServiceDB.cs" />
+    <Compile Include="Implementations\ReportServiceDB.cs" />
     <Compile Include="Implementations\StockingServiceDB.cs" />
     <Compile Include="Implementations\StorageServiceDB.cs" />
     <Compile Include="Migrations\201903160819058_FirstMigration.cs" />
@@ -80,10 +81,16 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Resources\TIMCYR.TTF" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AbstractGarmentFactoryModel\AbstractGarmentFactoryModel.csproj">
@@ -101,6 +108,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903161212502_SecondMigration.resx">
       <DependentUpon>201903161212502_SecondMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905300743359_SomeMigration.resx">
       <DependentUpon>201905300743359_SomeMigration.cs</DependentUpon>
