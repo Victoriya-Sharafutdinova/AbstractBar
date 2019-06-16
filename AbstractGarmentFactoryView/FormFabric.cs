@@ -96,20 +96,6 @@ namespace AbstractGarmentFactoryView
             }
         }
 
-        //private void buttonUpd_Click(object sender, EventArgs e)
-        //{
-        //    if (dataGridView1.SelectedRows.Count == 1)
-        //    {
-        //        var form = Container.Resolve<FormFabricStocking>();
-        //        form.Model = fabricStocking[dataGridView1.SelectedRows[0].Cells[0].RowIndex];
-        //        if (form.ShowDialog() == DialogResult.OK)
-        //        {
-        //            fabricStocking[dataGridView1.SelectedRows[0].Cells[0].RowIndex] = form.Model;
-        //            LoadData();
-        //        }
-        //    }
-        //}
-
         private void buttonDel_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count == 1)
