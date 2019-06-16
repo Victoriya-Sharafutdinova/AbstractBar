@@ -130,7 +130,8 @@ namespace AbstractGarmentFactoryView
         private void заказыКлиентовToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var form = new FormCustomerIndents();
-            form.ShowDialog(); }
+            form.ShowDialog();
+        }
 
         private void сотрудникиToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -149,6 +150,12 @@ namespace AbstractGarmentFactoryView
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void письмаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new FormMails();
+            form.ShowDialog();
         }
     }
 }

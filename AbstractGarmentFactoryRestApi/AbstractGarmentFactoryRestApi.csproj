@@ -115,6 +115,7 @@
     <Compile Include="Controllers\FabricController.cs" />
     <Compile Include="Controllers\ImplementerController.cs" />
     <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="Controllers\MessageInfoController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\StorageController.cs" />
     <Compile Include="Controllers\StockingController.cs" />

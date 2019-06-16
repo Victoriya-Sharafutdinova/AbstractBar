@@ -5,10 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity.SqlServer;
 using System.Linq;
+using System.Configuration;
 using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
 using AbstractGarmentFactoryServiceDAL.Interfaces;
+using System.Net;
+using System.Net.Mail;
+
 
 namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
 {
@@ -28,83 +32,101 @@ namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
                 Id = rec.Id,
                 CustomerId = rec.CustomerId,
                 FabricId = rec.FabricId,
+                ImplementerId = rec.ImplementerId,
                 DateCreate = SqlFunctions.DateName("dd", rec.DateCreate) + " " + SqlFunctions.DateName("mm", rec.DateCreate) + " " + SqlFunctions.DateName("yyyy", rec.DateCreate),
                 DateImplement = rec.DateImplement == null ? "" : SqlFunctions.DateName("dd", rec.DateImplement.Value) + " " + SqlFunctions.DateName("mm", rec.DateImplement.Value) + " " + SqlFunctions.DateName("yyyy", rec.DateImplement.Value),
                 Condition = rec.Condition.ToString(),
                 Amount = rec.Amount,
                 Total = rec.Total,
                 CustomerFIO = rec.Customer.CustomerFIO,
-                FabricName = rec.Fabric.FabricName
+                FabricName = rec.Fabric.FabricName,
+                ImplementerName = rec.Implementer.ImplementerFIO
             }).ToList();
             return result;
         }
 
         public void CreateIndent(IndentBindingModel model)
         {
-            context.Indents.Add(new Indent
+            var indent = new Indent
             {
                 CustomerId = model.CustomerId,
                 FabricId = model.FabricId,
+                ImplementerId = model.ImplementerId,
                 DateCreate = DateTime.Now,
                 Amount = model.Amount,
                 Total = model.Total,
                 Condition = IndentCondition.Принят
-            });
+            };
+
+            var customer = context.Customers.FirstOrDefault(x => x.Id == model.CustomerId);
+            SendEmail(customer.Mail, "Оповещение по заказам", 
+                string.Format("Заказ №{0} от {1} создан успешно",
+                indent.Id, indent.DateCreate.ToShortDateString()));
+
             context.SaveChanges();
+
         }
 
         public void TakeIndentInWork(IndentBindingModel model)
         {
             using (var transaction = context.Database.BeginTransaction())
             {
+                Indent element = context.Indents
+                    .FirstOrDefault(rec => rec.Id == model.Id);
                 try
                 {
-
-                    Indent element = context.Indents.FirstOrDefault(rec => rec.Id == model.Id);
                     if (element == null)
                     {
                         throw new Exception("Элемент не найден");
                     }
-                    if (element.Condition != IndentCondition.Принят)
+                    if (element.Condition != IndentCondition.Принят && element.Condition != IndentCondition.НедостаточноРесурсов)
                     {
                         throw new Exception("Заказ не в статусе \"Принят\"");
                     }
-                    var fabricStockings = context.FabricStockings.Include(rec => rec.Stocking).Where(rec => rec.FabricId == element.FabricId).ToList();
-                    // списываем      
+                    var fabricStockings = context.FabricStockings
+                        .Include(rec => rec.Stocking)
+                        .Where(rec => rec.FabricId == element.FabricId).ToList();
+                    // списываем          
                     foreach (var fabricStocking in fabricStockings)
                     {
-                        int amountOnStorage = fabricStocking.Amount * element.Amount;
-                        var storageStockings = context.StorageStockings.Where(rec => rec.StockingId == fabricStocking.StockingId).ToList();
+                        int amountOnStorages = fabricStocking.Amount * element.Amount;
+                        var storageStockings = context.StorageStockings
+                            .Where(rec => rec.StockingId == fabricStocking.StockingId).ToList();
                         foreach (var storageStocking in storageStockings)
                         {
-                            // компонентов на одном слкаде может не хватать  
-                            if (storageStocking.Amount >= amountOnStorage)
+                            // компонентов на одном слкаде может не хватать     
+                            if (storageStocking.Amount >= amountOnStorages)
                             {
-                                storageStocking.Amount -= amountOnStorage;
-                                amountOnStorage = 0;
+                                storageStocking.Amount -= amountOnStorages;
+                                amountOnStorages = 0;
                                 context.SaveChanges();
                                 break;
                             }
                             else
                             {
-                                amountOnStorage -= storageStocking.Amount;
+                                amountOnStorages -= storageStocking.Amount;
                                 storageStocking.Amount = 0;
                                 context.SaveChanges();
                             }
                         }
-                        if (amountOnStorage > 0)
+                        if (amountOnStorages > 0)
                         {
-                            throw new Exception("Не достаточно компонента " + fabricStocking.Stocking.StockingName + " требуется " + fabricStocking.Amount + ", не хватает " + amountOnStorage);
+                            throw new Exception("Не достаточно компонента " + fabricStocking.Stocking.StockingName + " требуется " + fabricStocking.Amount + ", не хватает " + amountOnStorages);
                         }
                     }
+                    element.ImplementerId = model.ImplementerId;
                     element.DateImplement = DateTime.Now;
                     element.Condition = IndentCondition.Выполняется;
                     context.SaveChanges();
+                    SendEmail(element.Customer.Mail, "Оповещение по заказам", string.Format("Заказ №{0} от {1} передеан в работу", element.Id, element.DateCreate.ToShortDateString()));
                     transaction.Commit();
                 }
                 catch (Exception)
                 {
                     transaction.Rollback();
+                    element.Condition = IndentCondition.НедостаточноРесурсов;
+                    context.SaveChanges();
+                    transaction.Commit();
                     throw;
                 }
             }
@@ -123,6 +145,9 @@ namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
             }
             element.Condition = IndentCondition.Готов;
             context.SaveChanges();
+            SendEmail(element.Customer.Mail, "Оповещение по заказам", 
+                string.Format("Заказ №{0} от {1} передан на оплату", 
+                element.Id, element.DateCreate.ToShortDateString()));
         }
 
         public void PayIndent(IndentBindingModel model)
@@ -138,6 +163,9 @@ namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
             }
             element.Condition = IndentCondition.Оплачен;
             context.SaveChanges();
+            SendEmail(element.Customer.Mail, "Оповещение по заказам", 
+                string.Format("Заказ №{0} от {1} оплачен успешно",
+                element.Id, element.DateCreate.ToShortDateString()));
         }
 
         public void PutStockingOnStorage(StorageStockingBindingModel model)
@@ -161,11 +189,47 @@ namespace AbstractGarmentFactoryServiceImplementDataBase.Implementations
 
         public List<IndentViewModel> GetFreeIndents()
         {       
-            List<IndentViewModel> result = context.Indents.Where(x => x.Condition == IndentCondition.Принят || x.Condition == IndentCondition.НедостаточноРесурсов)
+            List<IndentViewModel> result = context.Indents
+                .Where(x => x.Condition == IndentCondition.Принят || x.Condition == IndentCondition.НедостаточноРесурсов)
                 .Select(rec => new IndentViewModel
                 {
                     Id = rec.Id
                 }).ToList();
-            return result; }
+            return result;
+        }
+
+        private void SendEmail(string mailAddress, string subject, string text)
+        {
+            MailMessage objMailMessage = new MailMessage();
+            SmtpClient objSmtpClient = null;
+
+            try
+            {
+                objMailMessage.From = new MailAddress(ConfigurationManager.AppSettings["MailLogin"]);
+                objMailMessage.To.Add(new MailAddress(mailAddress));
+                objMailMessage.Subject = subject;
+                objMailMessage.Body = text;
+                objMailMessage.SubjectEncoding = System.Text.Encoding.UTF8;
+                objMailMessage.BodyEncoding = System.Text.Encoding.UTF8;
+
+                objSmtpClient = new SmtpClient("smtp.gmail.com", 587);
+                objSmtpClient.UseDefaultCredentials = false;
+                objSmtpClient.EnableSsl = true;
+                objSmtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                objSmtpClient.Credentials = new NetworkCredential(ConfigurationManager.AppSettings["MailLogin"], 
+                    ConfigurationManager.AppSettings["MailPassword"]);
+
+                objSmtpClient.Send(objMailMessage);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                objMailMessage = null;
+                objSmtpClient = null;
+            }
+        }
     }
 }

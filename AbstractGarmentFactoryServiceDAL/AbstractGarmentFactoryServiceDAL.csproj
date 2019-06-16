@@ -48,6 +48,7 @@
     <Compile Include="BindingModel\FabricBindingModel.cs" />
     <Compile Include="BindingModel\FabricStockingBindingModel.cs" />
     <Compile Include="BindingModel\ImplementerBindingModel.cs" />
+    <Compile Include="BindingModel\MessageInfoBindingModel.cs" />
     <Compile Include="BindingModel\ReportBindingModel.cs" />
     <Compile Include="BindingModel\StockingBindingModel.cs" />
     <Compile Include="BindingModel\IndentBindingModel.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Interfaces\ICustomerService.cs" />
     <Compile Include="Interfaces\IFabricService.cs" />
     <Compile Include="Interfaces\IImplementerService.cs" />
+    <Compile Include="Interfaces\IMessageInfoService.cs" />
     <Compile Include="Interfaces\IReportService.cs" />
     <Compile Include="Interfaces\IStockingService.cs" />
     <Compile Include="Interfaces\IMainService.cs" />
@@ -65,6 +67,7 @@
     <Compile Include="ViewModel\FabricStockingViewModel.cs" />
     <Compile Include="ViewModel\FabricViewModel.cs" />
     <Compile Include="ViewModel\ImplementerViewModel.cs" />
+    <Compile Include="ViewModel\MessageInfoViewModel.cs" />
     <Compile Include="ViewModel\StockingViewModel.cs" />
     <Compile Include="ViewModel\IndentViewModel.cs" />
     <Compile Include="ViewModel\StorageStockingViewModel.cs" />
